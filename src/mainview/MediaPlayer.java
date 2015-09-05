@@ -38,7 +38,10 @@ public class MediaPlayer extends JFrame implements ActionListener {
 	private final JButton backward = new JButton("");
 	private final JButton volume = new JButton("");
 	private final JButton speak = new JButton("Speak");
+	private final JButton cancel = new JButton("Cancel");
 	private final JButton save = new JButton("Save");
+	
+	private BackgroundVoice bg = null;
 	
 	/**
 	 * Launch the application.
@@ -122,12 +125,17 @@ public class MediaPlayer extends JFrame implements ActionListener {
 		text.setColumns(10);
 		
 		// Speak button
-		speak.setBounds(291, 48, 97, 41);
+		speak.setBounds(252, 48, 97, 41);
 		speech.add(speak);
 		speak.addActionListener(this);
 		
+		// Cancel button
+		cancel.setBounds(350, 48, 97, 41);
+		speech.add(cancel);
+		cancel.addActionListener(this);
+		
 		//save text button// TODO Auto-generated method stub
-		save.setBounds(389, 48, 97, 41);
+		save.setBounds(448, 48, 97, 41);
 		speech.add(save);
 		save.addActionListener(this);
 	}
@@ -147,7 +155,14 @@ public class MediaPlayer extends JFrame implements ActionListener {
 		}else if(e.getSource()==volume){
 			
 		}else if(e.getSource()==speak){
-			
+			if (bg == null || bg.isDone() == true){
+				bg = new BackgroundVoice("echo " + text.getText());
+				bg.execute();
+			}
+		}else if(e.getSource()==cancel){
+			if (bg != null){
+				bg.cancel(true);
+			}
 		}else if(e.getSource()==save){
 			
 		}
