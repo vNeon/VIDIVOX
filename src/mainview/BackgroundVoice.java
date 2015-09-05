@@ -94,7 +94,7 @@ public class BackgroundVoice extends SwingWorker<Object, Integer> {
 				ProcessBuilder builder3 = new ProcessBuilder("/bin/bash", "-c",
 						"kill " + pidOfAplay);
 				builder3.start();
-
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

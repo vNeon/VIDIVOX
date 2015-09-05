@@ -39,7 +39,6 @@ public class MediaPlayer extends JFrame implements ActionListener {
 	
 	private JTextField text= new JTextField();
 	
-	private final JFrame frame= new JFrame();
 	private final JPanel contentPane =new JPanel();;
 	private final JPanel screen = new JPanel();
 	private final JPanel controls = new JPanel();
@@ -179,9 +178,9 @@ public class MediaPlayer extends JFrame implements ActionListener {
 				video.pause();
 			}
 		}else if(e.getSource()==forward){
-			
+			video.skip(5000);
 		}else if(e.getSource()==backward){
-			
+			video.skip(-5000);
 		}else if(e.getSource()==volume){
 			
 		}else if(e.getSource()==speak){
