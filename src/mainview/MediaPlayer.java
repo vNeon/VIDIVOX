@@ -18,11 +18,28 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.SystemColor;
 
-public class MediaPlayer extends JFrame {
+public class MediaPlayer extends JFrame implements ActionListener {
 
-	private JPanel contentPane;
-	private JTextField textField;
-
+	private final ImageIcon playIcon= new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48.png"));
+	private final ImageIcon forwardIcon= new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48 (2).png"));
+	private final ImageIcon backwardIcon= new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48 (2) - Copy.png"));
+	private final ImageIcon volumeIcon= new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48 (3).png"));
+	private final ImageIcon stopIcon= new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48 (1).png"));
+	
+	private JTextField text= new JTextField();
+	
+	private final JPanel contentPane =new JPanel();;
+	private final JPanel screen = new JPanel();
+	private final JPanel controls = new JPanel();
+	private final JPanel speech = new JPanel();
+	
+	private final JButton play = new JButton("");
+	private final JButton forward = new JButton("");
+	private final JButton backward = new JButton("");
+	private final JButton volume = new JButton("");
+	private final JButton speak = new JButton("Speak");
+	private final JButton save = new JButton("Save");
+	
 	/**
 	 * Launch the application.
 	 */
@@ -47,91 +64,93 @@ public class MediaPlayer extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MediaPlayer() {
+	public MediaPlayer(){
+		//Setting contentPane;
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MediaPlayer.class.getResource("/javagui/resources/logo.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 700);
-		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		ImageIcon p= new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48.png"));
-		ImageIcon f= new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48 (2).png"));
-		ImageIcon b= new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48 (2) - Copy.png"));
-		ImageIcon v= new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48 (3).png"));
-		ImageIcon s= new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48 (1).png"));
 		
-		JPanel screen = new JPanel();
 		screen.setBackground(SystemColor.menu);
-		screen.setBounds(0, 0, 782, 481);
+		screen.setBounds(0, 0, 800, 480);
 		contentPane.add(screen);
 		screen.setLayout(new BorderLayout(0, 0));
 		
-		JPanel controls = new JPanel();
+		//Control panel
 		controls.setBackground(SystemColor.inactiveCaptionBorder);
-		controls.setBounds(0, 482, 782, 67);
+		controls.setBounds(0, 481, 800, 70);
 		contentPane.add(controls);
 		controls.setLayout(null);
 		
-		JButton play = new JButton("");
+		//Play button
 		play.setBounds(350, 5, 100, 55);
-		play.setIcon(new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48.png")));
+		play.setIcon(playIcon);
 		controls.add(play);
-		play.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(play.getIcon().equals(p)){
-					play.setIcon(s);
-				}else{
-					play.setIcon(p);
-				}
-			}
+		play.addActionListener(this);
 		
-		});
-		
-		JButton forward = new JButton("");
-		forward.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		forward.setIcon(new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48 (2).png")));
+		//Forward button
+		forward.setIcon(forwardIcon);
 		forward.setBounds(460, 5, 100, 55);
 		controls.add(forward);
+		forward.addActionListener(this);
 		
-		JButton backward = new JButton("");
-		backward.setIcon(new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48 (2) - Copy.png")));
+		//Backward button
+		backward.setIcon(backwardIcon);
 		backward.setBounds(240, 5, 100, 55);
 		controls.add(backward);
+		backward.addActionListener(this);
 		
-		JButton volume = new JButton("");
-		volume.setIcon(new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48 (3).png")));
+		volume.setIcon(volumeIcon);
 		volume.setBounds(591, 5, 100, 55);
 		controls.add(volume);
+		volume.addActionListener(this);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(SystemColor.inactiveCaptionBorder);
-		panel.setBounds(0, 551, 782, 102);
-		contentPane.add(panel);
-		panel.setLayout(null);
+		//Speech panel
+		speech.setBackground(SystemColor.inactiveCaptionBorder);
+		speech.setBounds(0, 551, 800, 100);
+		contentPane.add(speech);
+		speech.setLayout(null);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Book Antiqua", Font.PLAIN, 18));
-		textField.setBounds(165, 15, 450, 30);
-		panel.add(textField);
-		textField.setColumns(10);
+		// input field
+		text = new JTextField();
+		text.setFont(new Font("Book Antiqua", Font.PLAIN, 18));
+		text.setBounds(165, 15, 450, 30);
+		speech.add(text);
+		text.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Speak");
-		btnNewButton.setBounds(291, 48, 97, 41);
-		panel.add(btnNewButton);
+		// Speak button
+		speak.setBounds(291, 48, 97, 41);
+		speech.add(speak);
+		speak.addActionListener(this);
 		
-		JButton btnNewButton_1 = new JButton("Save");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		//save text button// TODO Auto-generated method stub
+		save.setBounds(389, 48, 97, 41);
+		speech.add(save);
+		save.addActionListener(this);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource()==play){
+			if(play.getIcon().equals(playIcon)){
+				play.setIcon(stopIcon);
+			}else{
+				play.setIcon(playIcon);
 			}
-		});
-		btnNewButton_1.setBounds(389, 48, 97, 41);
-		panel.add(btnNewButton_1);
+		}else if(e.getSource()==forward){
+			
+		}else if(e.getSource()==backward){
+			
+		}else if(e.getSource()==volume){
+			
+		}else if(e.getSource()==speak){
+			
+		}else if(e.getSource()==save){
+			
+		}
+		
 	}
 }
