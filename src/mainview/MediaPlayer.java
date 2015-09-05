@@ -6,6 +6,15 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.sun.jna.Native;
+import com.sun.jna.NativeLibrary;
+
+import uk.co.caprica.vlcj.binding.LibVlc;
+import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import uk.co.caprica.vlcj.runtime.RuntimeUtil;
+
 import javax.swing.UIManager;
 
 import java.awt.Toolkit;
@@ -15,6 +24,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
 import java.awt.Font;
 import java.awt.SystemColor;
 
@@ -28,6 +39,7 @@ public class MediaPlayer extends JFrame implements ActionListener {
 	
 	private JTextField text= new JTextField();
 	
+	private final JFrame frame= new JFrame();
 	private final JPanel contentPane =new JPanel();;
 	private final JPanel screen = new JPanel();
 	private final JPanel controls = new JPanel();
@@ -43,44 +55,48 @@ public class MediaPlayer extends JFrame implements ActionListener {
 	
 	private BackgroundVoice bg = null;
 	
+	private final EmbeddedMediaPlayerComponent mediaPlayerComponent=new EmbeddedMediaPlayerComponent();
+	private final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			 NativeLibrary.addSearchPath(
+	            RuntimeUtil.getLibVlcLibraryName(), "/Applications/vlc-2.0.0/VLC.app/Contents/MacOS/lib"
+	        );
+	        Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
+			
+	        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MediaPlayer frame = new MediaPlayer();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		
+		SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new MediaPlayer();
+            }
+        });
 	}
-
 	/**
 	 * Create the frame.
 	 */
 	public MediaPlayer(){
+		
 		//Setting contentPane;
-		setIconImage(Toolkit.getDefaultToolkit().getImage(MediaPlayer.class.getResource("/javagui/resources/logo.jpg")));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 700);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		contentPane.add(mediaPlayerComponent);
 		
-		
+		//
 		screen.setBackground(SystemColor.menu);
 		screen.setBounds(0, 0, 800, 480);
 		contentPane.add(screen);
 		screen.setLayout(new BorderLayout(0, 0));
+		screen.setVisible(true);
+		screen.add(mediaPlayerComponent);
+		
 		
 		//Control panel
 		controls.setBackground(SystemColor.inactiveCaptionBorder);
@@ -138,6 +154,18 @@ public class MediaPlayer extends JFrame implements ActionListener {
 		save.setBounds(448, 48, 97, 41);
 		speech.add(save);
 		save.addActionListener(this);
+		
+		// set Frame
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MediaPlayer.class.getResource("/javagui/resources/logo.jpg")));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 800, 700);
+		setContentPane(contentPane);
+		setVisible(true);
+		
+		//set up the video
+		video.canPause();
+		video.playMedia("big_buck_bunny_1_minute.avi");
+		video.stop();
 	}
 
 	@Override
@@ -145,8 +173,10 @@ public class MediaPlayer extends JFrame implements ActionListener {
 		if (e.getSource()==play){
 			if(play.getIcon().equals(playIcon)){
 				play.setIcon(stopIcon);
+				video.start();
 			}else{
 				play.setIcon(playIcon);
+				video.pause();
 			}
 		}else if(e.getSource()==forward){
 			
@@ -165,6 +195,6 @@ public class MediaPlayer extends JFrame implements ActionListener {
 			}
 		}else if(e.getSource()==save){
 			
-		}
+		}	
 	}
 }
