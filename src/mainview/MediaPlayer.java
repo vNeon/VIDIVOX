@@ -30,6 +30,7 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import java.awt.Font;
 import java.awt.SystemColor;
@@ -66,7 +67,10 @@ public class MediaPlayer extends JFrame implements ActionListener,
 
 	private final JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
 
+	private Timer timer = new Timer(500, this);
+
 	private BackgroundVoice bg = null;
+	private SkipBackground sg = null;
 
 	private final EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 	private final EmbeddedMediaPlayer video = mediaPlayerComponent
@@ -112,7 +116,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		screen.setVisible(true);
 		screen.add(mediaPlayerComponent);
 
-		// Control panel
+		// Control panel with control buttons
 		controls.setBackground(SystemColor.inactiveCaptionBorder);
 		controls.setBounds(0, 481, 800, 70);
 		contentPane.add(controls);
@@ -189,27 +193,48 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		setContentPane(contentPane);
 		setVisible(true);
 
-		// set up the video
-		video.canPause();
+		// initiate timer
+		timer.start();
+
+		// set up the video player
 		video.playMedia("big_buck_bunny_1_minute.avi");
-		video.stop();
-		video.setVolume(50);
+		video.start();
+		video.pause();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
+		if (video.getTime() == video.getLength()) {
+			play.setIcon(playIcon);
+		}
 		if (e.getSource() == play) {
-			if (play.getIcon().equals(playIcon)) {
+			if (sg != null) {
+				sg.cancel(true);
+				sg = null;
+			}
+			if (video.isPlaying() == false) {
 				play.setIcon(stopIcon);
-				video.start();
+				video.play();
 			} else {
 				play.setIcon(playIcon);
 				video.pause();
 			}
 		} else if (e.getSource() == forward) {
-			video.skip(5000);
+			if (sg != null) {
+				sg.cancel(true);
+				sg = null;
+			}
+			sg = new SkipBackground(true, video);
+			sg.execute();
+
 		} else if (e.getSource() == backward) {
-			video.skip(-5000);
+			if (sg != null) {
+				sg.cancel(true);
+				sg = null;
+			}
+			sg = new SkipBackground(false, video);
+			sg.execute();
 		} else if (e.getSource() == volume) {
 
 		} else if (e.getSource() == speak) {
