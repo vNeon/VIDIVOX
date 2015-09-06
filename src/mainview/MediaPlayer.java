@@ -62,6 +62,7 @@ public class MediaPlayer extends JFrame implements ActionListener, ChangeListene
 	private final JSlider slider= new JSlider(JSlider.HORIZONTAL, 0,100,50);
 	
 	private Timer timer= new Timer(500,this);
+
 	private BackgroundVoice bg = null;
 	private SkipBackground sg=null;
 	
