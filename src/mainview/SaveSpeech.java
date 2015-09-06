@@ -14,11 +14,11 @@ public class SaveSpeech extends SwingWorker<Void, Void>{
 	protected Void doInBackground() throws Exception {
 		// command used in bash terminal
 		// create a temporary file
-		String cmd = "echo \"" + message + "\" > tmp.txt";//"text2wave " + message + " -o " + "myWave.wav";
+		String cmdCreateFile = "echo \"" + message + "\" > tmp.txt";
 		
 		// builds the command and runs it
 		// creates a temporary file
-		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
+		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmdCreateFile);
 		Process process = builder.start();
 		process.waitFor();
 		process.destroy();
@@ -32,6 +32,17 @@ public class SaveSpeech extends SwingWorker<Void, Void>{
 		Process processText2Wave = builderText2Wave.start();
 		processText2Wave.waitFor();
 		processText2Wave.destroy();
+
+		// command used in bash terminal
+		// deletes the temporary file
+		String cmdDeleteTxt = "rm tmp.txt";
+
+		// builds the command and runs it
+		// deletes temporary file
+		ProcessBuilder builderDeleteTxt = new ProcessBuilder("/bin/bash", "-c", cmdDeleteTxt);
+		Process processDeleteTxt = builderDeleteTxt.start();
+		processDeleteTxt.waitFor();
+		processDeleteTxt.destroy();
 		
 		return null;
 	}
