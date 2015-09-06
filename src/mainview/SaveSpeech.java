@@ -21,6 +21,7 @@ public class SaveSpeech extends SwingWorker<Void, Void>{
 		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
 		Process process = builder.start();
 		process.waitFor();
+		process.destroy();
 		
 		//converts text file to wave file
 		String cmdText2Wave = "text2wave tmp.txt -o myWave.wav";
@@ -30,7 +31,7 @@ public class SaveSpeech extends SwingWorker<Void, Void>{
 		ProcessBuilder builderText2Wave = new ProcessBuilder("/bin/bash", "-c", cmdText2Wave);
 		Process processText2Wave = builderText2Wave.start();
 		processText2Wave.waitFor();
-		
+		processText2Wave.destroy();
 		
 		return null;
 	}
