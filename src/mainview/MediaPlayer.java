@@ -1,11 +1,16 @@
 package mainview;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
@@ -29,7 +34,7 @@ import javax.swing.SwingUtilities;
 import java.awt.Font;
 import java.awt.SystemColor;
 
-public class MediaPlayer extends JFrame implements ActionListener {
+public class MediaPlayer extends JFrame implements ActionListener, ChangeListener{
 
 	private final ImageIcon playIcon= new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48.png"));
 	private final ImageIcon forwardIcon= new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48 (2).png"));
@@ -38,8 +43,7 @@ public class MediaPlayer extends JFrame implements ActionListener {
 	private final ImageIcon stopIcon= new ImageIcon(MediaPlayer.class.getResource("/javagui/resources/48 (1).png"));
 	
 	private JTextField text= new JTextField();
-	
-	private final JFrame frame= new JFrame();
+	private final JLabel volumelbl= new JLabel();
 	private final JPanel contentPane =new JPanel();;
 	private final JPanel screen = new JPanel();
 	private final JPanel controls = new JPanel();
@@ -52,6 +56,8 @@ public class MediaPlayer extends JFrame implements ActionListener {
 	private final JButton speak = new JButton("Speak");
 	private final JButton cancel = new JButton("Cancel");
 	private final JButton save = new JButton("Save");
+	
+	private final JSlider slider= new JSlider(JSlider.HORIZONTAL, 0,100,50);
 	
 	private BackgroundVoice bg = null;
 	
@@ -105,28 +111,42 @@ public class MediaPlayer extends JFrame implements ActionListener {
 		controls.setLayout(null);
 		
 		//Play button
-		play.setBounds(350, 5, 100, 55);
+		play.setBounds(260, 5, 100, 55);
 		play.setIcon(playIcon);
 		controls.add(play);
 		play.addActionListener(this);
 		
 		//Forward button
 		forward.setIcon(forwardIcon);
-		forward.setBounds(460, 5, 100, 55);
+		forward.setBounds(370, 5, 100, 55);
 		controls.add(forward);
 		forward.addActionListener(this);
 		
 		//Backward button
 		backward.setIcon(backwardIcon);
-		backward.setBounds(240, 5, 100, 55);
+		backward.setBounds(150, 5, 100, 55);
 		controls.add(backward);
 		backward.addActionListener(this);
+		/*
+		//volume label
+		volumelbl.setLocation(480, 70);
+		volumelbl.setIcon(volumeIcon);
+		controls.add(volume);
+		volumelbl.setVisible(true);
+		*/
 		
+		//volume button
 		volume.setIcon(volumeIcon);
-		volume.setBounds(591, 5, 100, 55);
+		volume.setBounds(480, 5, 100, 55);
 		controls.add(volume);
 		volume.addActionListener(this);
 		
+		// volume slider
+		slider.setBounds(585, 10, 200, 65);
+		slider.setPaintTicks(true);
+		slider.addChangeListener(this);
+		
+		controls.add(slider);
 		//Speech panel
 		speech.setBackground(SystemColor.inactiveCaptionBorder);
 		speech.setBounds(0, 551, 800, 100);
@@ -166,6 +186,7 @@ public class MediaPlayer extends JFrame implements ActionListener {
 		video.canPause();
 		video.playMedia("big_buck_bunny_1_minute.avi");
 		video.stop();
+		video.setVolume(50);
 	}
 
 	@Override
@@ -179,9 +200,9 @@ public class MediaPlayer extends JFrame implements ActionListener {
 				video.pause();
 			}
 		}else if(e.getSource()==forward){
-			
+			video.skip(5000);
 		}else if(e.getSource()==backward){
-			
+			video.skip(-5000);
 		}else if(e.getSource()==volume){
 			
 		}else if(e.getSource()==speak){
@@ -197,5 +218,11 @@ public class MediaPlayer extends JFrame implements ActionListener {
 			SaveSpeech ss = new SaveSpeech(text.getText());
 			ss.execute();
 		}	
+	}
+	
+	
+	@Override
+	public void stateChanged(ChangeEvent arg0) {
+		video.setVolume(slider.getValue());
 	}
 }
