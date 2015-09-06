@@ -5,9 +5,11 @@ import javax.swing.SwingWorker;
 public class SaveSpeech extends SwingWorker<Void, Void>{
 	
 	private String message;
-	
-	public SaveSpeech (String message){
+	private String fileName;
+		
+	public SaveSpeech (String message, String fileName){
 		this.message = message;
+		this.fileName = fileName;
 	}
 	
 	@Override
@@ -24,7 +26,7 @@ public class SaveSpeech extends SwingWorker<Void, Void>{
 		process.destroy();
 		
 		//converts text file to wave file
-		String cmdText2Wave = "text2wave tmp.txt -o myWave.wav";
+		String cmdText2Wave = "text2wave tmp.txt -o " + fileName;
 		
 		// builds the command and runs it
 		// converts text file to wave file
