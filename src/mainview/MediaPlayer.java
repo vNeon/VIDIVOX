@@ -194,7 +194,8 @@ public class MediaPlayer extends JFrame implements ActionListener {
 				bg.cancel(true);
 			}
 		}else if(e.getSource()==save){
-			
+			SaveSpeech ss = new SaveSpeech(text.getText());
+			ss.execute();
 		}	
 	}
 }
