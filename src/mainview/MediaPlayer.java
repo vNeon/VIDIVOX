@@ -274,6 +274,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 				ssf.setSpeech(text.getText());	
 			}else{
 				ssf.setVisible(true);
+				ssf.setSpeech(text.getText());
 			}
 		}
 	}
