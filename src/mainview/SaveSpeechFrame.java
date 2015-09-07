@@ -83,7 +83,7 @@ public class SaveSpeechFrame extends JFrame {
 					return;
 				}
 				
-				fileName = fileName + ".wav";
+				fileName = fileName + ".mp3";
 				
 				if(!folderName.equals("")){
 					fileName = folderName + seperator + fileName;
@@ -127,7 +127,7 @@ public class SaveSpeechFrame extends JFrame {
 		lblNewLabel_1.setBounds(12, 12, 313, 33);
 		contentPane.add(lblNewLabel_1);
 		
-		JLabel lblwav = new JLabel(".wav");
+		JLabel lblwav = new JLabel(".mp3");
 		lblwav.setBounds(426, 82, 70, 25);
 		contentPane.add(lblwav);
 		
