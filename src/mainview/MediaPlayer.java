@@ -267,9 +267,14 @@ public class MediaPlayer extends JFrame implements ActionListener,
 				bg.cancel(true);
 			}
 		} else if (e.getSource() == save) {
+			if(ssf ==null){
+				ssf=null;
 				ssf = new SaveSpeechFrame();
 				ssf.setVisible(true);
 				ssf.setSpeech(text.getText());	
+			}else{
+				ssf.setVisible(true);
+			}
 		}
 	}
 
