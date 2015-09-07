@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -23,6 +24,8 @@ public class SaveSpeechFrame extends JFrame {
 	
 	private JFrame thisFrame = this;
 	private JTextField textField;
+	
+	JFileChooser chooser = null;
 	/**
 	 * Launch the application.
 	 */
@@ -65,7 +68,9 @@ public class SaveSpeechFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				// the files name
 				String fileName = textField_1.getText();
+				String folderName = textField.getText();
 				String pattern = "^[a-zA-Z0-9_]*$";
+				String seperator = System.getProperty("file.separator");
 				
 				//checks if file name is valid
 				if (!fileName.matches(pattern)){
@@ -78,13 +83,23 @@ public class SaveSpeechFrame extends JFrame {
 					return;
 				}
 				
-				// used to check if the file exists
 				fileName = fileName + ".wav";
+				
+				if(!folderName.equals("")){
+					fileName = folderName + seperator + fileName;
+				}
+				// used to check if the file exists
+				
 				File tmpFile = new File(fileName);
+				File tmpDir = new File(folderName);
 				
 				// checks if file already exists
 				if (tmpFile.exists() && !tmpFile.isDirectory()){
 					MessageFrame mf = new MessageFrame("Error", "Error:", "File Already Exists!");
+					mf.setVisible(true);
+					return;
+				}else if (!tmpDir.exists()){
+					MessageFrame mf = new MessageFrame("Error", "Error:", "Folder does not Exists!");
 					mf.setVisible(true);
 					return;
 				}
@@ -126,6 +141,23 @@ public class SaveSpeechFrame extends JFrame {
 		textField.setColumns(10);
 		
 		JButton btnNewButton_2 = new JButton("Browse");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (chooser == null){
+					chooser = new JFileChooser();
+					chooser.setCurrentDirectory(new java.io.File("."));
+					chooser.setDialogTitle("choosertitle");
+					chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					chooser.setAcceptAllFileFilterUsed(false);
+
+					if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+						textField.setText(chooser.getSelectedFile().toString());
+					}
+					chooser = null;
+				}
+				
+			}
+		});
 		btnNewButton_2.setBounds(423, 150, 115, 25);
 		contentPane.add(btnNewButton_2);
 	}
