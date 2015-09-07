@@ -146,7 +146,7 @@ public class SaveSpeechFrame extends JFrame {
 				if (chooser == null){
 					chooser = new JFileChooser();
 					chooser.setCurrentDirectory(new java.io.File("."));
-					chooser.setDialogTitle("choosertitle");
+					chooser.setDialogTitle("Find Directory");
 					chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 					chooser.setAcceptAllFileFilterUsed(false);
 
@@ -154,8 +154,7 @@ public class SaveSpeechFrame extends JFrame {
 						textField.setText(chooser.getSelectedFile().toString());
 					}
 					chooser = null;
-				}
-				
+				}	
 			}
 		});
 		btnNewButton_2.setBounds(423, 150, 115, 25);
