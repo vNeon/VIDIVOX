@@ -82,8 +82,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	private SkipBackground sg = null;
 
 	private final EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
-	private final EmbeddedMediaPlayer video = mediaPlayerComponent
-			.getMediaPlayer();
+	private final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
 
 	/**
 	 * Launch the application.
@@ -276,6 +275,17 @@ public class MediaPlayer extends JFrame implements ActionListener,
 				ssf.setVisible(true);
 				ssf.setSpeech(text.getText());
 			}
+		} else if (e.getSource()== openFile){
+			AddMp3File mp3= new AddMp3File("Zapac.mp3");
+			mp3.execute();
+			video.playMedia("out.mp4");
+			video.start();
+		} else if (e.getSource()==addCommentary){
+			/*AddText at= new AddText(text.getText());
+			at.execute();
+			video.playMedia("out.mp4");
+			video.start();
+			*/
 		}
 	}
 
