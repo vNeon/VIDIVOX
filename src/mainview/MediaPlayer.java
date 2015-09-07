@@ -280,12 +280,13 @@ public class MediaPlayer extends JFrame implements ActionListener,
 			mp3.execute();
 			video.playMedia("out.mp4");
 			video.start();
+			play.setIcon(stopIcon);
 		} else if (e.getSource()==addCommentary){
-			/*AddText at= new AddText(text.getText());
+			AddText at= new AddText(text.getText());
 			at.execute();
-			video.playMedia("out.mp4");
+			video.playMedia("out2.mp4");
 			video.start();
-			*/
+			play.setIcon(stopIcon);
 		}
 	}
 

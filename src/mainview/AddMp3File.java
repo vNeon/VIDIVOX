@@ -18,7 +18,7 @@ public class AddMp3File extends SwingWorker<Object,Integer> {
 	@Override
 	protected Object doInBackground() throws Exception {
 		
-		String cmd="ffmpeg -i big_buck_bunny_1_minute.avi -i "+fileName+" -filter_complex amix=inputs=2 "+outputFile;
+		String cmd="ffmpeg -y -i big_buck_bunny_1_minute.avi -i "+fileName+" -filter_complex amix=inputs=2 "+outputFile;
 		ProcessBuilder builder= new ProcessBuilder("/bin/bash", "-c",cmd);
 		Process process=builder.start();
 		process.waitFor();
@@ -29,7 +29,7 @@ public class AddMp3File extends SwingWorker<Object,Integer> {
 	@Override
 	protected void done(){
 		try {
-			Thread.sleep(500);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.getStackTrace();
 		}
