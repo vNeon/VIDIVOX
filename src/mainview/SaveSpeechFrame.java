@@ -22,6 +22,7 @@ public class SaveSpeechFrame extends JFrame {
 	private String message;
 	
 	private JFrame thisFrame = this;
+	private JTextField textField;
 	/**
 	 * Launch the application.
 	 */
@@ -43,14 +44,14 @@ public class SaveSpeechFrame extends JFrame {
 	 */
 	public SaveSpeechFrame() {
 		setTitle("Save Speech");
-		setBounds(100, 100, 550, 251);
+		setBounds(100, 100, 550, 275);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(116, 74, 298, 33);
+		textField_1.setBounds(118, 74, 296, 33);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
 		
@@ -93,7 +94,7 @@ public class SaveSpeechFrame extends JFrame {
 				thisFrame.dispose();
 			}
 		});
-		btnNewButton.setBounds(50, 159, 117, 25);
+		btnNewButton.setBounds(46, 207, 117, 25);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Cancel");
@@ -102,7 +103,7 @@ public class SaveSpeechFrame extends JFrame {
 				thisFrame.dispose();
 			}
 		});
-		btnNewButton_1.setBounds(379, 159, 117, 25);
+		btnNewButton_1.setBounds(379, 207, 117, 25);
 		contentPane.add(btnNewButton_1);
 		
 		JLabel lblNewLabel_1 = new JLabel("Save Speech");
@@ -113,6 +114,19 @@ public class SaveSpeechFrame extends JFrame {
 		JLabel lblwav = new JLabel(".wav");
 		lblwav.setBounds(426, 82, 70, 25);
 		contentPane.add(lblwav);
+		
+		JLabel lblNewLabel_2 = new JLabel("Save in folder:");
+		lblNewLabel_2.setBounds(12, 150, 117, 25);
+		contentPane.add(lblNewLabel_2);
+		
+		textField = new JTextField();
+		textField.setBounds(118, 146, 296, 33);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		JButton btnNewButton_2 = new JButton("Browse");
+		btnNewButton_2.setBounds(423, 150, 115, 25);
+		contentPane.add(btnNewButton_2);
 	}
 	public void setSpeech(String message){
 		this.message = message;
