@@ -80,6 +80,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	private SaveSpeechFrame ssf=null;
 	private BackgroundVoice bg = null;
 	private SkipBackground sg = null;
+	private AddMp3FileFrame amff = null;
 
 	private final EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 	private final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
@@ -276,11 +277,14 @@ public class MediaPlayer extends JFrame implements ActionListener,
 				ssf.setSpeech(text.getText());
 			}
 		} else if (e.getSource()== openFile){
-			AddMp3File mp3= new AddMp3File("Zapac.mp3");
-			mp3.execute();
-			video.playMedia("out.mp4");
-			video.start();
-			play.setIcon(stopIcon);
+			if(amff == null){
+				amff = new AddMp3FileFrame();
+				amff.addVideo(video);
+				amff.setVisible(true);
+			}else{
+				amff.setVisible(true);
+			}
+			
 		} else if (e.getSource()==addCommentary){
 			AddText at= new AddText(text.getText());
 			at.execute();
