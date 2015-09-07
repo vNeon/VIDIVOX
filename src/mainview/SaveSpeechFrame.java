@@ -50,7 +50,7 @@ public class SaveSpeechFrame extends JFrame {
 		contentPane.setLayout(null);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(116, 82, 298, 25);
+		textField_1.setBounds(116, 74, 298, 33);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
 		
@@ -76,7 +76,7 @@ public class SaveSpeechFrame extends JFrame {
 					return;
 				}
 				
-				// used to create the file
+				// used to check if the file exists
 				fileName = fileName + ".wav";
 				File tmpFile = new File(fileName);
 				
