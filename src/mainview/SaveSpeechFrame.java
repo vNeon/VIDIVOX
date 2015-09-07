@@ -31,6 +31,7 @@ public class SaveSpeechFrame extends JFrame {
 			public void run() {
 				try {
 					SaveSpeechFrame frame = new SaveSpeechFrame();
+					frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

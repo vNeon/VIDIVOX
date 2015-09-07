@@ -34,22 +34,29 @@ import javax.swing.Timer;
 
 import java.awt.Font;
 import java.awt.SystemColor;
+import javax.swing.SwingConstants;
 
 public class MediaPlayer extends JFrame implements ActionListener,
 		ChangeListener {
-
+	
+	//Icons were taken from Icongal.com
 	private final ImageIcon playIcon = new ImageIcon(
-			MediaPlayer.class.getResource("/javagui/resources/48.png"));
+			MediaPlayer.class.getResource("/javagui/resources/play.png"));
 	private final ImageIcon forwardIcon = new ImageIcon(
-			MediaPlayer.class.getResource("/javagui/resources/48 (2).png"));
+			MediaPlayer.class.getResource("/javagui/resources/forward.png"));
 	private final ImageIcon backwardIcon = new ImageIcon(
-			MediaPlayer.class
-					.getResource("/javagui/resources/48 (2) - Copy.png"));
+			MediaPlayer.class.getResource("/javagui/resources/backward.png"));
 	private final ImageIcon volumeIcon = new ImageIcon(
-			MediaPlayer.class.getResource("/javagui/resources/48 (3).png"));
+			MediaPlayer.class.getResource("/javagui/resources/volume.png"));
 	private final ImageIcon stopIcon = new ImageIcon(
-			MediaPlayer.class.getResource("/javagui/resources/48 (1).png"));
-
+			MediaPlayer.class.getResource("/javagui/resources/stop.png"));
+	private final ImageIcon saveIcon= new ImageIcon(
+			MediaPlayer.class.getResource("/javagui/resources/save2.png"));
+	private final ImageIcon speakIcon= new ImageIcon(
+			MediaPlayer.class.getResource("/javagui/resources/speak.png"));
+	private final ImageIcon fileIcon= new ImageIcon(
+			MediaPlayer.class.getResource("/javagui/resources/openfile.png"));
+	
 	private JTextField text = new JTextField();
 	private final JLabel volumelbl = new JLabel();
 	private final JPanel contentPane = new JPanel();;
@@ -61,14 +68,16 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	private final JButton forward = new JButton("");
 	private final JButton backward = new JButton("");
 	private final JButton volume = new JButton("");
-	private final JButton speak = new JButton("Speak");
+	private final JButton speak = new JButton("");
 	private final JButton cancel = new JButton("Cancel");
-	private final JButton save = new JButton("Save");
-
+	private final JButton save = new JButton("");
+	private final JButton openFile= new JButton("");
+	private final JButton addCommentary= new JButton("Add");
 	private final JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
 
 	private Timer timer = new Timer(500, this);
 
+	private SaveSpeechFrame ssf=null;
 	private BackgroundVoice bg = null;
 	private SkipBackground sg = null;
 
@@ -106,9 +115,9 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		// Setting contentPane;
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
-		contentPane.add(mediaPlayerComponent);
+		//contentPane.add(mediaPlayerComponent);
 
-		//
+		//video screen
 		screen.setBackground(SystemColor.menu);
 		screen.setBounds(0, 0, 800, 480);
 		contentPane.add(screen);
@@ -123,71 +132,83 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		controls.setLayout(null);
 
 		// Play button
-		play.setBounds(260, 5, 100, 55);
+		play.setBounds(320, 5, 100, 55);
 		play.setIcon(playIcon);
 		controls.add(play);
 		play.addActionListener(this);
 
 		// Forward button
 		forward.setIcon(forwardIcon);
-		forward.setBounds(370, 5, 100, 55);
+		forward.setBounds(430, 5, 100, 55);
 		controls.add(forward);
 		forward.addActionListener(this);
 
 		// Backward button
 		backward.setIcon(backwardIcon);
-		backward.setBounds(150, 5, 100, 55);
+		backward.setBounds(210, 5, 100, 55);
 		controls.add(backward);
 		backward.addActionListener(this);
-		/*
-		 * //volume label volumelbl.setLocation(480, 70);
-		 * volumelbl.setIcon(volumeIcon); controls.add(volume);
-		 * volumelbl.setVisible(true);
-		 */
-
-		// volume button
-		volume.setIcon(volumeIcon);
-		volume.setBounds(480, 5, 100, 55);
-		controls.add(volume);
-		volume.addActionListener(this);
+		
+		// volume label
+		volumelbl.setBounds(540, 5, 48, 60);
+		volumelbl.setIcon(volumeIcon); controls.add(volume);
+		volumelbl.setVisible(true);
+		controls.add(volumelbl);
 
 		// volume slider
 		slider.setBounds(585, 10, 200, 65);
 		slider.setPaintTicks(true);
 		slider.addChangeListener(this);
-
 		controls.add(slider);
+		
 		// Speech panel
 		speech.setBackground(SystemColor.inactiveCaptionBorder);
-		speech.setBounds(0, 551, 800, 100);
+		speech.setBounds(0, 551, 800, 200);
 		contentPane.add(speech);
 		speech.setLayout(null);
 
 		// input field
 		text = new JTextField();
 		text.setFont(new Font("Book Antiqua", Font.PLAIN, 18));
-		text.setBounds(165, 15, 450, 30);
+		text.setBounds(165, 15, 455, 30);
 		speech.add(text);
 		text.setColumns(10);
 
 		// Speak button
-		speak.setBounds(252, 48, 97, 41);
+		speak.setBounds(275, 50, 65, 40);
+		speak.setBackground(new Color(240, 240, 240));
+		speak.setIcon(speakIcon);
 		speech.add(speak);
 		speak.addActionListener(this);
+		
 
 		// Cancel button
-		cancel.setBounds(350, 48, 97, 41);
+		cancel.setBounds(530, 50, 65, 40);
+		cancel.setForeground(SystemColor.textHighlight);
+		cancel.setFont(new Font("Tahoma", Font.BOLD, 10));
 		speech.add(cancel);
 		cancel.addActionListener(this);
 
 		// save text button// TODO Auto-generated method stub
-		save.setBounds(448, 48, 97, 41);
+		save.setBounds(360, 50, 65, 40);
+		save.setIcon(saveIcon);
 		speech.add(save);
 		save.addActionListener(this);
-
+		
+		// Open file button
+		openFile.setBounds(445, 50, 65, 40);
+		openFile.setIcon(fileIcon);
+		speech.add(openFile);
+		openFile.addActionListener(this);
+		
+		// Add comment button
+		addCommentary.setBounds(190, 50, 65, 40);
+		addCommentary.setFont(new Font("Tahoma", Font.BOLD, 10));
+		speech.add(addCommentary);
+		addCommentary.addActionListener(this);
+		
 		// set Frame
-		setIconImage(Toolkit.getDefaultToolkit().getImage(
-				MediaPlayer.class.getResource("/javagui/resources/logo.jpg")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MediaPlayer.class.getResource("/javagui/resources/logo.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 700);
 		setContentPane(contentPane);
@@ -235,7 +256,6 @@ public class MediaPlayer extends JFrame implements ActionListener,
 			}
 			sg = new SkipBackground(false, video);
 			sg.execute();
-		} else if (e.getSource() == volume) {
 
 		} else if (e.getSource() == speak) {
 			if (bg == null || bg.isDone() == true) {
@@ -247,9 +267,14 @@ public class MediaPlayer extends JFrame implements ActionListener,
 				bg.cancel(true);
 			}
 		} else if (e.getSource() == save) {
-			SaveSpeechFrame ssf = new SaveSpeechFrame();
-			ssf.setVisible(true);
-			ssf.setSpeech(text.getText());
+			if(ssf ==null){
+				ssf=null;
+				ssf = new SaveSpeechFrame();
+				ssf.setVisible(true);
+				ssf.setSpeech(text.getText());	
+			}else{
+				ssf.setVisible(true);
+			}
 		}
 	}
 
