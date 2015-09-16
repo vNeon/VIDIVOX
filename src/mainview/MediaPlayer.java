@@ -74,16 +74,17 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	private final JButton openFile= new JButton("");
 	private final JButton addCommentary= new JButton("Add");
 	private final JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
-
+	private JLabel statuslbl = new JLabel();
+	
 	private Timer timer = new Timer(500, this);
 
 	private SaveSpeechFrame ssf=null;
 	private BackgroundVoice bg = null;
 	private SkipBackground sg = null;
+	private AddMp3FileFrame amff = null;
 
 	private final EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
-	private final EmbeddedMediaPlayer video = mediaPlayerComponent
-			.getMediaPlayer();
+	private final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
 
 	/**
 	 * Launch the application.
@@ -115,7 +116,6 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		// Setting contentPane;
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
-		//contentPane.add(mediaPlayerComponent);
 
 		//video screen
 		screen.setBackground(SystemColor.menu);
@@ -177,6 +177,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		// Speak button
 		speak.setBounds(275, 50, 65, 40);
 		speak.setBackground(new Color(240, 240, 240));
+		speak.setToolTipText("Speak the text in the text box");
 		speak.setIcon(speakIcon);
 		speech.add(speak);
 		speak.addActionListener(this);
@@ -186,17 +187,20 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		cancel.setBounds(530, 50, 65, 40);
 		cancel.setForeground(SystemColor.textHighlight);
 		cancel.setFont(new Font("Tahoma", Font.BOLD, 10));
+		cancel.setToolTipText("Cancel the speech");
 		speech.add(cancel);
 		cancel.addActionListener(this);
 
-		// save text button// TODO Auto-generated method stub
+		// save text button
 		save.setBounds(360, 50, 65, 40);
+		save.setToolTipText("Save the synthetic speech");
 		save.setIcon(saveIcon);
 		speech.add(save);
 		save.addActionListener(this);
 		
 		// Open file button
 		openFile.setBounds(445, 50, 65, 40);
+		openFile.setToolTipText("Merge an selected audio and a selected video file");
 		openFile.setIcon(fileIcon);
 		speech.add(openFile);
 		openFile.addActionListener(this);
@@ -204,10 +208,18 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		// Add comment button
 		addCommentary.setBounds(190, 50, 65, 40);
 		addCommentary.setFont(new Font("Tahoma", Font.BOLD, 10));
+		addCommentary.setToolTipText("Add text to the video");
 		speech.add(addCommentary);
 		addCommentary.addActionListener(this);
 		
-		// set Frame
+		//status of file being created
+		statuslbl.setBounds(280,100, 500,70);
+		statuslbl.setFont(new Font("Time New Roman", Font.ITALIC+Font.BOLD, 15));
+		statuslbl.setForeground(Color.blue);
+		statuslbl.setVisible(true);
+		speech.add(statuslbl);
+		
+		// set Frame/ TODO Auto-generated method stub
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MediaPlayer.class.getResource("/javagui/resources/logo.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 700);
@@ -225,8 +237,8 @@ public class MediaPlayer extends JFrame implements ActionListener,
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
-		if (video.getTime() == video.getLength()) {
+		System.out.println(video.getTime());
+		if (video.getTime() == video.getLength()|| !video.isPlaying()) {
 			play.setIcon(playIcon);
 		}
 		if (e.getSource() == play) {
@@ -274,7 +286,20 @@ public class MediaPlayer extends JFrame implements ActionListener,
 				ssf.setSpeech(text.getText());	
 			}else{
 				ssf.setVisible(true);
+				ssf.setSpeech(text.getText());
 			}
+		} else if (e.getSource()== openFile){
+			if(amff == null){
+				amff = new AddMp3FileFrame();
+				amff.addVideo(video);
+				amff.addStatuslbl(statuslbl);
+				amff.setVisible(true);
+			}else{
+				amff.setVisible(true);
+			}
+		} else if (e.getSource()==addCommentary){
+			AddText at= new AddText(text.getText(), video, statuslbl);
+			at.execute();
 		}
 	}
 
