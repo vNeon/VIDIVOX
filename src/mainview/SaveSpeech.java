@@ -16,7 +16,7 @@ public class SaveSpeech extends SwingWorker<Void, Void>{
 	protected Void doInBackground() throws Exception {
 		// command used in bash terminal
 		// create a temporary file
-		String cmdCreateFile = "echo \"" + message + "\" > tmp.txt";
+		String cmdCreateFile = "echo \"" + message + "\" | text2wave -o tmp.wav";
 		
 		// builds the command and runs it
 		// creates a temporary file
@@ -26,7 +26,7 @@ public class SaveSpeech extends SwingWorker<Void, Void>{
 		process.destroy();
 		
 		//converts text file to wave file
-		String cmdText2Wave = "text2wave tmp.txt -o " + fileName;
+		String cmdText2Wave = "lame tmp.wav " + fileName;
 		
 		// builds the command and runs it
 		// converts text file to wave file
@@ -37,7 +37,7 @@ public class SaveSpeech extends SwingWorker<Void, Void>{
 
 		// command used in bash terminal
 		// deletes the temporary file
-		String cmdDeleteTxt = "rm tmp.txt";
+		String cmdDeleteTxt = "rm tmp.wav";
 
 		// builds the command and runs it
 		// deletes temporary file
