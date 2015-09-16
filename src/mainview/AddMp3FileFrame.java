@@ -31,6 +31,7 @@ public class AddMp3FileFrame extends JFrame {
 	private JFrame thisFrame = this;
 	private JFileChooser chooser = null; 
 	private EmbeddedMediaPlayer video = null;
+	private JLabel statuslbl;
 
 	/**
 	 * Launch the application.
@@ -110,7 +111,7 @@ public class AddMp3FileFrame extends JFrame {
 					return;
 				}else{
 					
-					AddMp3File amf= new AddMp3File(textField.getText(), video);
+					AddMp3File amf= new AddMp3File(textField.getText(), video, statuslbl);
 					amf.execute();
 				}
 				thisFrame.dispose();
@@ -131,6 +132,9 @@ public class AddMp3FileFrame extends JFrame {
 	
 	public void addVideo(EmbeddedMediaPlayer video){
 		this.video = video;
+	}
+	public void addStatuslbl(JLabel statuslbl){
+		this.statuslbl=statuslbl;
 	}
 
 }
