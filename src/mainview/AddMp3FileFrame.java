@@ -79,10 +79,10 @@ public class AddMp3FileFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(chooser ==null){
 					chooser = new JFileChooser();
-					FileNameExtensionFilter filter = new FileNameExtensionFilter("MP3 File","mp3");
+					//FileNameExtensionFilter filter = new FileNameExtensionFilter("MP3 File","mp3");
 					chooser.setCurrentDirectory(new java.io.File("."));
 					chooser.setDialogTitle("choosertitle");
-					chooser.setFileFilter((javax.swing.filechooser.FileFilter) filter);
+					//chooser.setFileFilter((javax.swing.filechooser.FileFilter) filter);
 					chooser.setAcceptAllFileFilterUsed(false);
 
 					if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
@@ -99,16 +99,20 @@ public class AddMp3FileFrame extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				File mp3File = new File(textField.getText());
-				if(!mp3File.exists() && !mp3File.isDirectory()){
-					MessageFrame mf = new MessageFrame("Error", "Error:", "File does not exist");
+				if(!mp3File.exists() && mp3File.isDirectory()){
+					MessageFrame mf;
+					if(mp3File.isDirectory()){
+						mf= new MessageFrame("Error", "Error:", "File is a directory");
+					}else{
+						mf= new MessageFrame("Error", "Error:", "File does not exist");
+					}
 					mf.setVisible(true);
 					return;
 				}else{
-					AddMp3File mp3= new AddMp3File("Zapac.mp3");
-					mp3.execute();
+					
+					AddMp3File amf= new AddMp3File(textField.getText(), video);
+					amf.execute();
 				}
-				video.playMedia("out.mp4");
-				video.start();
 				thisFrame.dispose();
 			}
 		});
