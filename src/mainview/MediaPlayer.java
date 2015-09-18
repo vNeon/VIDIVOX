@@ -234,7 +234,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		setBounds(100, 100, 800, 700);
 		setContentPane(contentPane);
 		setVisible(true);
-
+		
 		// initiate timer
 		timer.start();
 
