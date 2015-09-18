@@ -26,7 +26,7 @@ public class SaveSpeech extends SwingWorker<Void, Void>{
 		process.destroy();
 		
 		//converts text file to wave file
-		String cmdText2Wave = "lame tmp.wav " + fileName;
+		String cmdText2Wave = "ffmpeg -i tmp.wav -f mp3 " + fileName;
 		
 		// builds the command and runs it
 		// converts text file to wave file
