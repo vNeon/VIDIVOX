@@ -16,8 +16,10 @@ public class MessageFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JFrame thisFrame = this;
+	private JLabel errorTitle = new JLabel();
 	/**
-	 * Launch the application.
+	 * ERROR 1 :illegal file- file is a directory
+	 * ERROR 2 :illegal file- file does not exist
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -75,10 +77,10 @@ public class MessageFrame extends JFrame {
 		thisFrame.setTitle(frameTitle);
 		contentPane.setLayout(null);
 		
-		JLabel title = new JLabel(messageTitle);
-		title.setFont(new Font("Dialog", Font.BOLD, 25));
-		title.setBounds(12, 12, 250, 60);
-		contentPane.add(title);
+		errorTitle.setText(messageTitle);
+		errorTitle.setFont(new Font("Dialog", Font.BOLD, 25));
+		errorTitle.setBounds(12, 12, 250, 60);
+		contentPane.add(errorTitle);
 		
 		JLabel message = new JLabel(messageText);
 		message.setBounds(12, 84, 426, 28);
@@ -92,5 +94,9 @@ public class MessageFrame extends JFrame {
 		});
 		btnNewButton.setBounds(166, 124, 117, 25);
 		contentPane.add(btnNewButton);
+	}
+	
+	public String getErrorTile(){
+		return this.errorTitle.getText();
 	}
 }

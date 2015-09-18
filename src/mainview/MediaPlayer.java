@@ -64,6 +64,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	private final JPanel controls = new JPanel();
 	private final JPanel speech = new JPanel();
 
+	private final JButton pickVideoFile= new JButton("");
 	private final JButton play = new JButton("");
 	private final JButton forward = new JButton("");
 	private final JButton backward = new JButton("");
@@ -130,7 +131,12 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		controls.setBounds(0, 481, 800, 70);
 		contentPane.add(controls);
 		controls.setLayout(null);
-
+		
+		//pick a video file to play
+		pickVideoFile.setBounds(50, 5, 100,55);
+		pickVideoFile.setText("OPENFILE");
+		pickVideoFile.addActionListener(this);
+		controls.add(pickVideoFile);
 		// Play button
 		play.setBounds(320, 5, 100, 55);
 		play.setIcon(playIcon);
@@ -219,7 +225,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		statuslbl.setVisible(true);
 		speech.add(statuslbl);
 		
-		// set Frame/ TODO Auto-generated method stub
+		// set Frame
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MediaPlayer.class.getResource("/javagui/resources/logo.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 700);

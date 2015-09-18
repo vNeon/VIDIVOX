@@ -1,38 +1,36 @@
 package mainview;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JColorChooser;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileFilter;
-
-public class AddMp3FileFrame extends JFrame {
-
+public class BrowseFileFrame extends JFrame{
+	
 	private JPanel contentPane;
 	private JTextField textField;
-	
 	private JFrame thisFrame = this;
 	private JFileChooser chooser = null; 
 	private EmbeddedMediaPlayer video = null;
 	private JLabel statuslbl;
-
+	private JLabel label = new JLabel();
+	private JLabel fileNamelbl = new JLabel("File name:");
+	private JButton browseVideoFile = new JButton("Browse");
+	private JButton confirm = new JButton("Confirm");
+	private MessageFrame mf=null;
+	private JButton cancel = new JButton("Cancel");
 	/**
 	 * Launch the application.
 	 */
@@ -40,7 +38,7 @@ public class AddMp3FileFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddMp3FileFrame frame = new AddMp3FileFrame();
+					BrowseFileFrame frame = new BrowseFileFrame("Frame", "Add file");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,8 +50,8 @@ public class AddMp3FileFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddMp3FileFrame() {
-		setTitle("Add an mp3 file");
+	public BrowseFileFrame(String title, String label){
+		setTitle(title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 225);
 		contentPane = new JPanel();
@@ -66,21 +64,21 @@ public class AddMp3FileFrame extends JFrame {
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
-		JLabel lblNewLabel = new JLabel("Add mp3 File");
-		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 25));
-		lblNewLabel.setBounds(12, 12, 328, 33);
-		contentPane.add(lblNewLabel);
+		this.label.setText(label);
+		this.label.setFont(new Font("Dialog", Font.BOLD, 25));
+		this.label.setBounds(12, 12, 328, 33);
+		contentPane.add(this.label);
 		
-		JLabel lblNewLabel_1 = new JLabel("File name:");
-		lblNewLabel_1.setBounds(12, 81, 111, 25);
-		contentPane.add(lblNewLabel_1);
+		//this field is for selecting video file
+		fileNamelbl.setBounds(12, 81, 111, 25);
+		contentPane.add(fileNamelbl);
 		
-		JButton btnBrowse = new JButton("Browse");
-		btnBrowse.addActionListener(new ActionListener() {
+		//Browse button let user selecting file
+		browseVideoFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(chooser ==null){
 					chooser = new JFileChooser();
-					FileNameExtensionFilter filter = new FileNameExtensionFilter("Media File","mp3");
+					FileNameExtensionFilter filter = new FileNameExtensionFilter("Media File","avi","mp4");
 					chooser.setCurrentDirectory(new java.io.File("."));
 					chooser.setDialogTitle("choosertitle");
 					chooser.setFileFilter((javax.swing.filechooser.FileFilter) filter);
@@ -93,19 +91,24 @@ public class AddMp3FileFrame extends JFrame {
 				}
 			}
 		});
-		btnBrowse.setBounds(341, 81, 87, 25);
-		contentPane.add(btnBrowse);
+		browseVideoFile.setBounds(341, 81, 87, 25);
+		contentPane.add(browseVideoFile);
 		
-		JButton btnNewButton = new JButton("Confirm");
-		btnNewButton.addActionListener(new ActionListener() {
+		//Confirm users choice
+		confirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				File mp3File = new File(textField.getText());
-				if(!mp3File.exists() && mp3File.isDirectory()){
-					MessageFrame mf;
+				if(!mp3File.exists() || mp3File.isDirectory()){
 					if(mp3File.isDirectory()){
-						mf= new MessageFrame("Error", "Error:", "File is a directory");
+						if(mf==null || mf.getErrorTile().equals("ERROR 2")){
+							mf=null;
+							mf= new MessageFrame("Error", "ERROR 1", "File is a directory");
+						}
 					}else{
-						mf= new MessageFrame("Error", "Error:", "File does not exist");
+						if(mf==null|| mf.getErrorTile().equals("ERROR 1")){
+							mf=null;
+							mf= new MessageFrame("Error", "ERROR 2", "File does not exist");
+						}
 					}
 					mf.setVisible(true);
 					return;
@@ -117,24 +120,24 @@ public class AddMp3FileFrame extends JFrame {
 				thisFrame.dispose();
 			}
 		});
-		btnNewButton.setBounds(46, 142, 117, 25);
-		contentPane.add(btnNewButton);
+		confirm.setBounds(46, 142, 117, 25);
+		contentPane.add(confirm);
 		
-		JButton btnNewButton_1 = new JButton("Cancel");
-		btnNewButton_1.addActionListener(new ActionListener() {
+		
+		cancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				thisFrame.dispose();
 			}
 		});
-		btnNewButton_1.setBounds(274, 142, 117, 25);
-		contentPane.add(btnNewButton_1);
+		cancel.setBounds(274, 142, 117, 25);
+		contentPane.add(cancel);
 	}
 	
-	public void addVideo(EmbeddedMediaPlayer video){
+	
+	protected void addVideo(EmbeddedMediaPlayer video){
 		this.video = video;
 	}
-	public void addStatuslbl(JLabel statuslbl){
+	protected void addStatuslbl(JLabel statuslbl){
 		this.statuslbl=statuslbl;
 	}
-
 }
