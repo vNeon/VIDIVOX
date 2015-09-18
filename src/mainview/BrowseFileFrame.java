@@ -117,7 +117,15 @@ public class BrowseFileFrame extends JFrame{
 					return;
 				}else{
 					mediaPlayer.setVideoTitle(textField.getText());
-					mediaPlayer.playVideo();
+					try {
+						Thread.sleep(500);
+						mediaPlayer.playVideo();
+					} catch (InterruptedException e1) {
+						
+						e1.printStackTrace();
+					}
+					//AddMp3File amf= new AddMp3File(textField.getText(), video, statuslbl);
+					//amf.execute();
 				}
 				thisFrame.dispose();
 			}
