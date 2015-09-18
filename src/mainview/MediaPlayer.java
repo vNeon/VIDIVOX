@@ -83,9 +83,12 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	private BackgroundVoice bg = null;
 	private SkipBackground sg = null;
 	private AddMp3FileFrame amff = null;
-
+	private MessageFrame mf=null;
+	
 	private final EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 	private final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
+	
+	private String videoTitle=null;
 
 	/**
 	 * Launch the application.
@@ -235,22 +238,31 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		// initiate timer
 		timer.start();
 
-		// set up the video player
-		video.playMedia("big_buck_bunny_1_minute.avi");
-		video.start();
-		video.pause();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(video.getTime());
+		
 		if (video.getTime() == video.getLength()|| !video.isPlaying()) {
 			play.setIcon(playIcon);
 		}
-		if (e.getSource() == play) {
+		if ( e.getSource()== pickVideoFile){
+			BrowseFileFrame bf= new BrowseFileFrame("Open Media File","Please select a media file");
+			videoTitle=bf.getFileName();
+			System.out.println(videoTitle);
+		}else if (e.getSource() == play) {
 			if (sg != null) {
 				sg.cancel(true);
 				sg = null;
+			}
+			if(videoTitle==null){
+				mf=null;
+				mf= new MessageFrame("Error", "ERROR 3","No file has been selected");
+				mf.setVisible(true);
+			}else{
+				video.playMedia(videoTitle);
+				video.start();
+				video.pause();
 			}
 			if (video.isPlaying() == false) {
 				play.setIcon(stopIcon);
@@ -312,5 +324,9 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
 		video.setVolume(slider.getValue());
+	}
+	
+	public void setVideoTitle(String title){
+		this.videoTitle=title;
 	}
 }

@@ -18,7 +18,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 public class BrowseFileFrame extends JFrame{
-	
 	private JPanel contentPane;
 	private JTextField textField;
 	private JFrame thisFrame = this;
@@ -31,6 +30,7 @@ public class BrowseFileFrame extends JFrame{
 	private JButton confirm = new JButton("Confirm");
 	private MessageFrame mf=null;
 	private JButton cancel = new JButton("Cancel");
+	private String fileName;
 	/**
 	 * Launch the application.
 	 */
@@ -38,8 +38,8 @@ public class BrowseFileFrame extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					BrowseFileFrame frame = new BrowseFileFrame("Frame", "Add file");
-					frame.setVisible(true);
+					//BrowseFileFrame frame = new BrowseFileFrame("Frame", "Add file");
+					//frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -58,6 +58,7 @@ public class BrowseFileFrame extends JFrame{
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setVisible(true);
 		
 		textField = new JTextField();
 		textField.setBounds(95, 81, 234, 25);
@@ -113,9 +114,9 @@ public class BrowseFileFrame extends JFrame{
 					mf.setVisible(true);
 					return;
 				}else{
-					
-					AddMp3File amf= new AddMp3File(textField.getText(), video, statuslbl);
-					amf.execute();
+					fileName= textField.getText();
+					//AddMp3File amf= new AddMp3File(textField.getText(), video, statuslbl);
+					//amf.execute();
 				}
 				thisFrame.dispose();
 			}
@@ -140,4 +141,8 @@ public class BrowseFileFrame extends JFrame{
 	protected void addStatuslbl(JLabel statuslbl){
 		this.statuslbl=statuslbl;
 	}
+	public String getFileName(){
+		return this.fileName;
+	}
+
 }

@@ -13,25 +13,29 @@ import javax.swing.SwingWorker;
 
 public class AddMp3File extends SwingWorker<Object,Integer> {
 	private String fileName;
-	private String outputFile= "out.mp4";
+	private String vidFile;
+	private String outputFile;
 	private EmbeddedMediaPlayer video;
 	private JLabel statuslbl;
-	
+	private boolean playVideo;
 	
 	/**
 	 * constructor
 	 * @param fileName
 	 * @param video
 	 */
-	public AddMp3File(String fileName, EmbeddedMediaPlayer video, JLabel statuslbl){
-		this.fileName=fileName;
-		this.video=video;
+	public AddMp3File(String fileName, String vidFile ,String outputFile ,EmbeddedMediaPlayer video, JLabel statuslbl, boolean playVideo){
+		this.fileName = fileName;
+		this.vidFile = vidFile;
+		this.outputFile = outputFile;
+		this.video = video;
 		this.statuslbl= statuslbl;
+		this.playVideo = playVideo;
 	}
 	
 	@Override
 	protected Object doInBackground() throws Exception {
-		String cmd="ffmpeg -y -i big_buck_bunny_1_minute.avi -i "+fileName+" -filter_complex amix=inputs=2 "+outputFile;
+		String cmd="ffmpeg -y -i "+vidFile+" -i "+fileName+" -filter_complex amix=inputs=2 "+outputFile;
 		ProcessBuilder builder= new ProcessBuilder("/bin/bash", "-c",cmd);
 		Process process=builder.start();
 		publish();
@@ -47,14 +51,19 @@ public class AddMp3File extends SwingWorker<Object,Integer> {
 	}
 	@Override 
 	protected void process(List<Integer> chunks){
-		this.statuslbl.setText("Creating Myfile, please wait...");
+		this.statuslbl.setText("Creating "+outputFile+", please wait...");
 	}
 	@Override
 	protected void done(){
-		this.statuslbl.setText("Successfully created Myfile!");
+		this.statuslbl.setText("Successfully created "+outputFile+"!");
 		video.playMedia(outputFile);
-		video.start();
-		video.pause();
+		
+		if(playVideo){
+			video.start();
+		} else{
+			video.start();
+			video.pause();
+		}
 	}
 
 }
