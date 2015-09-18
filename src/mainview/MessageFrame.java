@@ -20,6 +20,7 @@ public class MessageFrame extends JFrame {
 	/**
 	 * ERROR 1 :illegal file- file is a directory
 	 * ERROR 2 :illegal file- file does not exist
+	 * ERROR 3 :no file has been selected.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

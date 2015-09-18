@@ -249,19 +249,14 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		if ( e.getSource()== pickVideoFile){
 			BrowseFileFrame bf= new BrowseFileFrame("Open Media File","Please select a media file",this);
 		}else if (e.getSource() == play) {
+			if(videoTitle==null){
+				mf= null;
+				mf= new MessageFrame("Error", "ERROR 3","No file has been selected");
+				mf.setVisible(true);
+			}
 			if (sg != null) {
 				sg.cancel(true);
 				sg = null;
-			}
-			if(videoTitle==null){
-				mf=null;
-				mf= new MessageFrame("Error", "ERROR 3","No file has been selected");
-				mf.setVisible(true);
-				
-			}else{
-				video.playMedia(videoTitle);
-				video.start();
-				video.pause();
 			}
 			if (video.isPlaying() == false) {
 				play.setIcon(stopIcon);
@@ -329,5 +324,12 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	}
 	public String getVideoTitle(){
 		return this.videoTitle;
+	}
+	
+	
+	public void playVideo(){
+		video.playMedia(videoTitle);
+		video.start();
+		video.pause();
 	}
 }

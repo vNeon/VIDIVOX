@@ -88,7 +88,7 @@ public class BrowseFileFrame extends JFrame{
 					chooser.setAcceptAllFileFilterUsed(false);
 
 					if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-						textField.setText(chooser.getSelectedFile().getName());
+						textField.setText(chooser.getSelectedFile().toString());
 					}
 					chooser = null;
 				}
@@ -117,7 +117,13 @@ public class BrowseFileFrame extends JFrame{
 					return;
 				}else{
 					mediaPlayer.setVideoTitle(textField.getText());
-					
+					try {
+						Thread.sleep(500);
+						mediaPlayer.playVideo();
+					} catch (InterruptedException e1) {
+						
+						e1.printStackTrace();
+					}
 					//AddMp3File amf= new AddMp3File(textField.getText(), video, statuslbl);
 					//amf.execute();
 				}
