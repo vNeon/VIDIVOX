@@ -15,6 +15,7 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 
 public class SaveSpeechFrame extends JFrame {
 
@@ -139,6 +140,12 @@ public class SaveSpeechFrame extends JFrame {
 		textField.setBounds(118, 146, 296, 33);
 		contentPane.add(textField);
 		textField.setColumns(10);
+		try {
+			textField.setText(new java.io.File(".").getCanonicalPath());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		JButton btnNewButton_2 = new JButton("Browse");
 		btnNewButton_2.addActionListener(new ActionListener() {

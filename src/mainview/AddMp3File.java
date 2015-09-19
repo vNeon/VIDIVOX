@@ -1,10 +1,10 @@
 package mainview;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
-
 
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
@@ -18,19 +18,23 @@ public class AddMp3File extends SwingWorker<Object,Integer> {
 	private EmbeddedMediaPlayer video;
 	private JLabel statuslbl;
 	private boolean playVideo;
+	private File outputName;
+	private MediaPlayer mediaPlayer;
 	
 	/**
 	 * constructor
 	 * @param fileName
 	 * @param video
 	 */
-	public AddMp3File(String fileName, String vidFile ,String outputFile ,EmbeddedMediaPlayer video, JLabel statuslbl, boolean playVideo){
+	public AddMp3File(String fileName, String vidFile ,String outputFile ,EmbeddedMediaPlayer video, JLabel statuslbl, boolean playVideo, MediaPlayer mediaPlayer){
 		this.fileName = fileName;
 		this.vidFile = vidFile;
 		this.outputFile = outputFile;
+		outputName = new File(outputFile);
 		this.video = video;
 		this.statuslbl= statuslbl;
 		this.playVideo = playVideo;
+		this.mediaPlayer = mediaPlayer;
 	}
 	
 	@Override
@@ -51,18 +55,16 @@ public class AddMp3File extends SwingWorker<Object,Integer> {
 	}
 	@Override 
 	protected void process(List<Integer> chunks){
-		this.statuslbl.setText("Creating "+outputFile+", please wait...");
+		this.statuslbl.setText("Creating "+outputName.getName()+", please wait...");
 	}
 	@Override
 	protected void done(){
-		this.statuslbl.setText("Successfully created "+outputFile+"!");
-		video.playMedia(outputFile);
+		this.statuslbl.setText("Successfully created "+outputName.getName()+"!");
 		
 		if(playVideo){
+			video.playMedia(outputFile);
+			mediaPlayer.setVideoTitle(outputFile);
 			video.start();
-		} else{
-			video.start();
-			video.pause();
 		}
 	}
 

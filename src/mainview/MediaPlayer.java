@@ -234,7 +234,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		setBounds(100, 100, 800, 700);
 		setContentPane(contentPane);
 		setVisible(true);
-
+		
 		// initiate timer
 		timer.start();
 
@@ -291,24 +291,22 @@ public class MediaPlayer extends JFrame implements ActionListener,
 				bg.cancel(true);
 			}
 		} else if (e.getSource() == save) {
-			if(ssf ==null){
-				ssf=null;
-				ssf = new SaveSpeechFrame();
-				ssf.setVisible(true);
-				ssf.setSpeech(text.getText());	
-			}else{
-				ssf.setVisible(true);
-				ssf.setSpeech(text.getText());
+			if(ssf !=null){
+				ssf.dispose();
 			}
+			ssf = new SaveSpeechFrame();
+			ssf.setVisible(true);
+			ssf.setSpeech(text.getText());
 		} else if (e.getSource()== openFile){
-			if(amff == null){
-				amff = new AddMp3FileFrame();
-				amff.addVideo(video);
-				amff.addStatuslbl(statuslbl);
-				amff.setVisible(true);
-			}else{
-				amff.setVisible(true);
+			if(amff != null){
+				amff.dispose();
 			}
+			amff = new AddMp3FileFrame();
+			amff.addVideo(video);
+			amff.addStatuslbl(statuslbl);
+			amff.setVisible(true);
+			amff.addMediaPlayer(this);
+			amff.addCurrentVideo(videoTitle);
 		} else if (e.getSource()==addCommentary){
 			AddText at= new AddText(text.getText(), video, statuslbl);
 			at.execute();

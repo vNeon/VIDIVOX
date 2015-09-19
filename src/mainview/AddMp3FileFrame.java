@@ -39,6 +39,7 @@ public class AddMp3FileFrame extends JFrame {
 	private JTextField saveToText;
 	private JCheckBox playVideoCheck;
 	private JTextField videoFileText;
+	private MediaPlayer mediaPlayer = null;
 
 	/**
 	 * Launch the application.
@@ -69,7 +70,7 @@ public class AddMp3FileFrame extends JFrame {
 		contentPane.setLayout(null);
 
 		mp3FileText = new JTextField();
-		mp3FileText.setBounds(114, 103, 215, 25);
+		mp3FileText.setBounds(114, 99, 215, 33);
 		contentPane.add(mp3FileText);
 		mp3FileText.setColumns(10);
 
@@ -97,7 +98,7 @@ public class AddMp3FileFrame extends JFrame {
 				File mp3File = new File(mp3FileText.getText());
 				File newFile = new File(saveToText.getText()
 						+ System.getProperty("file.separator")
-						+ newFileName.getText());
+						+ newFileName.getText() + ".avi");
 				File directory = new File(saveToText.getText());
 
 				if (!mp3File.exists() || mp3File.isDirectory()
@@ -120,36 +121,38 @@ public class AddMp3FileFrame extends JFrame {
 					return;
 				} else {
 					AddMp3File amf = new AddMp3File(mp3FileText.getText(),
-							"big_buck_bunny_1_minute.avi", newFile.getAbsolutePath(), video, statuslbl,
-							playVideoCheck.isSelected());
+							videoFileText.getText(), newFile.getAbsolutePath(), video, statuslbl,
+							playVideoCheck.isSelected(), mediaPlayer);
 					amf.execute();
 				}
+				thisFrame.setVisible(false);
 				thisFrame.dispose();
 			}
 		});
-		btnNewButton.setBounds(72, 273, 117, 25);
+		btnNewButton.setBounds(57, 266, 117, 25);
 		contentPane.add(btnNewButton);
 
 		JButton cancel_btn = new JButton("Cancel");
 		cancel_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				thisFrame.dispose();
+				thisFrame.setVisible(false);
+				thisFrame.dispose();;
 			}
 		});
-		cancel_btn.setBounds(276, 273, 117, 25);
+		cancel_btn.setBounds(281, 266, 117, 25);
 		contentPane.add(cancel_btn);
 
 		newFileName = new JTextField();
-		newFileName.setBounds(114, 140, 215, 25);
+		newFileName.setBounds(114, 140, 215, 33);
 		contentPane.add(newFileName);
 		newFileName.setColumns(10);
 
 		JLabel newFileLabel = new JLabel("Name of file:");
-		newFileLabel.setBounds(12, 145, 111, 15);
+		newFileLabel.setBounds(12, 149, 111, 15);
 		contentPane.add(newFileLabel);
 
 		saveToText = new JTextField();
-		saveToText.setBounds(114, 172, 215, 25);
+		saveToText.setBounds(114, 181, 215, 33);
 		contentPane.add(saveToText);
 		saveToText.setColumns(10);
 		try {
@@ -160,7 +163,7 @@ public class AddMp3FileFrame extends JFrame {
 		}
 
 		JLabel saveToLabel = new JLabel("Save to:");
-		saveToLabel.setBounds(12, 177, 70, 15);
+		saveToLabel.setBounds(12, 190, 70, 15);
 		contentPane.add(saveToLabel);
 
 		JButton browseDirectory = new JButton("Browse");
@@ -169,11 +172,11 @@ public class AddMp3FileFrame extends JFrame {
 				directoryChooser();
 			}
 		});
-		browseDirectory.setBounds(341, 172, 87, 25);
+		browseDirectory.setBounds(341, 185, 87, 25);
 		contentPane.add(browseDirectory);
 
 		playVideoCheck = new JCheckBox("Play video when finished");
-		playVideoCheck.setBounds(114, 219, 215, 23);
+		playVideoCheck.setBounds(114, 222, 215, 23);
 		contentPane.add(playVideoCheck);
 
 		JLabel videoFileLabel = new JLabel("Video File:");
@@ -181,7 +184,7 @@ public class AddMp3FileFrame extends JFrame {
 		contentPane.add(videoFileLabel);
 
 		videoFileText = new JTextField();
-		videoFileText.setBounds(114, 66, 215, 25);
+		videoFileText.setBounds(114, 57, 215, 34);
 		contentPane.add(videoFileText);
 		videoFileText.setColumns(10);
 
@@ -191,8 +194,12 @@ public class AddMp3FileFrame extends JFrame {
 				fileChooser("video");
 			}
 		});
-		browseVid_btn.setBounds(341, 66, 87, 25);
+		browseVid_btn.setBounds(341, 61, 87, 25);
 		contentPane.add(browseVid_btn);
+		
+		JLabel lblNewLabel = new JLabel(".avi");
+		lblNewLabel.setBounds(351, 149, 70, 15);
+		contentPane.add(lblNewLabel);
 	}
 
 	public void addVideo(EmbeddedMediaPlayer video) {
@@ -205,6 +212,10 @@ public class AddMp3FileFrame extends JFrame {
 	
 	public void addCurrentVideo(String videoFile){
 		videoFileText.setText(videoFile);
+	}
+	
+	public void addMediaPlayer(MediaPlayer mediaPlayer){
+		this.mediaPlayer = mediaPlayer;
 	}
 
 	public void fileChooser(String location) {
