@@ -44,6 +44,7 @@ public class MessageFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+	
 		
 		JLabel title = new JLabel("Title");
 		title.setFont(new Font("Dialog", Font.BOLD, 25));
