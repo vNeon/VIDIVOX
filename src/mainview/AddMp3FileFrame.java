@@ -39,6 +39,7 @@ public class AddMp3FileFrame extends JFrame {
 	private JTextField saveToText;
 	private JCheckBox playVideoCheck;
 	private JTextField videoFileText;
+	private MediaPlayer mediaPlayer = null;
 
 	/**
 	 * Launch the application.
@@ -121,9 +122,10 @@ public class AddMp3FileFrame extends JFrame {
 				} else {
 					AddMp3File amf = new AddMp3File(mp3FileText.getText(),
 							videoFileText.getText(), newFile.getAbsolutePath(), video, statuslbl,
-							playVideoCheck.isSelected());
+							playVideoCheck.isSelected(), mediaPlayer);
 					amf.execute();
 				}
+				thisFrame.setVisible(false);
 				thisFrame.dispose();
 			}
 		});
@@ -133,7 +135,8 @@ public class AddMp3FileFrame extends JFrame {
 		JButton cancel_btn = new JButton("Cancel");
 		cancel_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				thisFrame.dispose();
+				thisFrame.setVisible(false);
+				thisFrame.dispose();;
 			}
 		});
 		cancel_btn.setBounds(281, 266, 117, 25);
@@ -209,6 +212,10 @@ public class AddMp3FileFrame extends JFrame {
 	
 	public void addCurrentVideo(String videoFile){
 		videoFileText.setText(videoFile);
+	}
+	
+	public void addMediaPlayer(MediaPlayer mediaPlayer){
+		this.mediaPlayer = mediaPlayer;
 	}
 
 	public void fileChooser(String location) {

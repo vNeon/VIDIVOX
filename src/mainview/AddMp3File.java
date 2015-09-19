@@ -19,13 +19,14 @@ public class AddMp3File extends SwingWorker<Object,Integer> {
 	private JLabel statuslbl;
 	private boolean playVideo;
 	private File outputName;
+	private MediaPlayer mediaPlayer;
 	
 	/**
 	 * constructor
 	 * @param fileName
 	 * @param video
 	 */
-	public AddMp3File(String fileName, String vidFile ,String outputFile ,EmbeddedMediaPlayer video, JLabel statuslbl, boolean playVideo){
+	public AddMp3File(String fileName, String vidFile ,String outputFile ,EmbeddedMediaPlayer video, JLabel statuslbl, boolean playVideo, MediaPlayer mediaPlayer){
 		this.fileName = fileName;
 		this.vidFile = vidFile;
 		this.outputFile = outputFile;
@@ -33,6 +34,7 @@ public class AddMp3File extends SwingWorker<Object,Integer> {
 		this.video = video;
 		this.statuslbl= statuslbl;
 		this.playVideo = playVideo;
+		this.mediaPlayer = mediaPlayer;
 	}
 	
 	@Override
@@ -61,6 +63,7 @@ public class AddMp3File extends SwingWorker<Object,Integer> {
 		
 		if(playVideo){
 			video.playMedia(outputFile);
+			mediaPlayer.setVideoTitle(outputFile);
 			video.start();
 		}
 	}
