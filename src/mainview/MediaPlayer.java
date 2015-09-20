@@ -38,8 +38,8 @@ import javax.swing.SwingConstants;
 
 public class MediaPlayer extends JFrame implements ActionListener,
 		ChangeListener {
-	
-	//Icons were taken from Icongal.com
+
+	// Icons were taken from Icongal.com
 	private final ImageIcon playIcon = new ImageIcon(
 			MediaPlayer.class.getResource("/javagui/resources/play.png"));
 	private final ImageIcon forwardIcon = new ImageIcon(
@@ -50,13 +50,13 @@ public class MediaPlayer extends JFrame implements ActionListener,
 			MediaPlayer.class.getResource("/javagui/resources/volume.png"));
 	private final ImageIcon stopIcon = new ImageIcon(
 			MediaPlayer.class.getResource("/javagui/resources/stop.png"));
-	private final ImageIcon saveIcon= new ImageIcon(
+	private final ImageIcon saveIcon = new ImageIcon(
 			MediaPlayer.class.getResource("/javagui/resources/save2.png"));
-	private final ImageIcon speakIcon= new ImageIcon(
+	private final ImageIcon speakIcon = new ImageIcon(
 			MediaPlayer.class.getResource("/javagui/resources/speak.png"));
-	private final ImageIcon fileIcon= new ImageIcon(
+	private final ImageIcon fileIcon = new ImageIcon(
 			MediaPlayer.class.getResource("/javagui/resources/openfile.png"));
-	
+
 	private JTextField text = new JTextField();
 	private final JLabel volumelbl = new JLabel();
 	private final JPanel contentPane = new JPanel();;
@@ -64,7 +64,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	private final JPanel controls = new JPanel();
 	private final JPanel speech = new JPanel();
 
-	private final JButton pickVideoFile= new JButton("");
+	private final JButton pickVideoFile = new JButton("");
 	private final JButton play = new JButton("");
 	private final JButton forward = new JButton("");
 	private final JButton backward = new JButton("");
@@ -72,25 +72,26 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	private final JButton speak = new JButton("");
 	private final JButton cancel = new JButton("Cancel");
 	private final JButton save = new JButton("");
-	private final JButton openFile= new JButton("");
-	private final JButton addCommentary= new JButton("Add");
+	private final JButton openFile = new JButton("");
+	private final JButton addCommentary = new JButton("Add");
 	private final JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
 	private JLabel statuslbl = new JLabel();
-	
+
 	private Timer timer = new Timer(500, this);
 
-	private SaveSpeechFrame ssf=null;
+	private SaveSpeechFrame ssf = null;
 	private BackgroundVoice bg = null;
 	private SkipBackground sg = null;
 	private AddMp3FileFrame amff = null;
-	private BrowseFileFrame bf1=null;
-	private BrowseFileFrame bf2=null;
-	private MessageFrame mf=null;
-	
+	private BrowseFileFrame bf1 = null;
+	private BrowseFileFrame bf2 = null;
+	private MessageFrame mf = null;
+
 	private final EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
-	private final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
-	
-	private String videoTitle=null;
+	private final EmbeddedMediaPlayer video = mediaPlayerComponent
+			.getMediaPlayer();
+
+	private String videoTitle = null;
 
 	/**
 	 * Launch the application.
@@ -123,7 +124,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
 
-		//video screen
+		// video screen
 		screen.setBackground(SystemColor.menu);
 		screen.setBounds(0, 0, 800, 480);
 		contentPane.add(screen);
@@ -136,10 +137,10 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		controls.setBounds(0, 481, 800, 70);
 		contentPane.add(controls);
 		controls.setLayout(null);
-		
-		//pick a video file to play
-		pickVideoFile.setBounds(50, 5, 100,55);
-		pickVideoFile.setText("OPENFILE");
+
+		// pick a video file to play
+		pickVideoFile.setBounds(50, 5, 100, 55);
+		pickVideoFile.setText("Select Video");
 		pickVideoFile.addActionListener(this);
 		controls.add(pickVideoFile);
 		// Play button
@@ -159,10 +160,11 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		backward.setBounds(210, 5, 100, 55);
 		controls.add(backward);
 		backward.addActionListener(this);
-		
+
 		// volume label
 		volumelbl.setBounds(540, 5, 48, 60);
-		volumelbl.setIcon(volumeIcon); controls.add(volume);
+		volumelbl.setIcon(volumeIcon);
+		controls.add(volume);
 		volumelbl.setVisible(true);
 		controls.add(volumelbl);
 
@@ -171,7 +173,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		slider.setPaintTicks(true);
 		slider.addChangeListener(this);
 		controls.add(slider);
-		
+
 		// Speech panel
 		speech.setBackground(SystemColor.inactiveCaptionBorder);
 		speech.setBounds(0, 551, 800, 200);
@@ -192,7 +194,6 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		speak.setIcon(speakIcon);
 		speech.add(speak);
 		speak.addActionListener(this);
-		
 
 		// Cancel button
 		cancel.setBounds(530, 50, 65, 40);
@@ -208,35 +209,37 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		save.setIcon(saveIcon);
 		speech.add(save);
 		save.addActionListener(this);
-		
+
 		// Open file button
 		openFile.setBounds(445, 50, 65, 40);
-		openFile.setToolTipText("Merge an selected audio and a selected video file");
+		openFile.setToolTipText("Select an audio file and a video file and merge them");
 		openFile.setIcon(fileIcon);
 		speech.add(openFile);
 		openFile.addActionListener(this);
-		
+
 		// Add comment button
 		addCommentary.setBounds(190, 50, 65, 40);
 		addCommentary.setFont(new Font("Tahoma", Font.BOLD, 10));
 		addCommentary.setToolTipText("Add text to the video");
 		speech.add(addCommentary);
 		addCommentary.addActionListener(this);
-		
-		//status of file being created
-		statuslbl.setBounds(280,100, 500,70);
-		statuslbl.setFont(new Font("Time New Roman", Font.ITALIC+Font.BOLD, 15));
+
+		// status of file being created
+		statuslbl.setBounds(280, 100, 500, 70);
+		statuslbl.setFont(new Font("Time New Roman", Font.ITALIC + Font.BOLD,
+				15));
 		statuslbl.setForeground(Color.blue);
 		statuslbl.setVisible(true);
 		speech.add(statuslbl);
-		
+
 		// set Frame
-		setIconImage(Toolkit.getDefaultToolkit().getImage(MediaPlayer.class.getResource("/javagui/resources/logo.jpg")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(
+				MediaPlayer.class.getResource("/javagui/resources/logo.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 700);
 		setContentPane(contentPane);
 		setVisible(true);
-		
+
 		// initiate timer
 		timer.start();
 
@@ -244,25 +247,28 @@ public class MediaPlayer extends JFrame implements ActionListener,
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		if (video.getTime() == video.getLength()|| !video.isPlaying()) {
+
+		if (video.getTime() == video.getLength() || !video.isPlaying()) {
 			play.setIcon(playIcon);
-		}else if(video.isPlaying()){
+		} else if (video.isPlaying()) {
 			play.setIcon(stopIcon);
 		}
-		if ( e.getSource()== pickVideoFile){
-			if(bf1!=null){
+		if (e.getSource() == pickVideoFile) {
+			if (bf1 != null) {
 				bf1.dispose();
-			}	
-				bf1= new BrowseFileFrame("Open Video File","Select a video file");
-				bf1.addMediaPlayer(this);
-				bf1.addCurrentVideo(videoTitle);
-				bf1.setVisible(true);
-			
-		}else if (e.getSource() == play) {
-			if(videoTitle==null){
-				mf= null;
-				mf= new MessageFrame("Error", "ERROR 4","No file has been selected");
+			}
+			bf1 = new BrowseFileFrame("Open Video File", "Select a video file");
+			bf1.addMediaPlayer(this);
+			bf1.addCurrentVideo(videoTitle);
+			bf1.setVisible(true);
+
+		} else if (e.getSource() == play) {
+			if (videoTitle == null) {
+				if (mf != null) {
+					mf.dispose();
+				}
+				mf = new MessageFrame("Error", "ERROR 4",
+						"No file has been selected");
 				mf.setVisible(true);
 			}
 			if (sg != null) {
@@ -302,14 +308,30 @@ public class MediaPlayer extends JFrame implements ActionListener,
 				bg.cancel(true);
 			}
 		} else if (e.getSource() == save) {
-			if(ssf !=null){
+			if (wordCount() > 30) {
+				if (mf != null) {
+					mf.dispose();
+				}
+				mf = new MessageFrame("Error", "ERROR", "Word count is: "
+						+ wordCount() + ". Must be less than 30 words.");
+				mf.setVisible(true);
+				return;
+			}else if(text.getText().equals("")){
+				if (mf != null) {
+					mf.dispose();
+				}
+				mf = new MessageFrame("Error", "ERROR", "Text field must not be empty!");
+				mf.setVisible(true);
+				return;
+			} else if (ssf != null) {
 				ssf.dispose();
 			}
 			ssf = new SaveSpeechFrame();
 			ssf.setVisible(true);
 			ssf.setSpeech(text.getText());
-		} else if (e.getSource()== openFile){
-			if(amff != null){
+			System.out.println(wordCount());
+		} else if (e.getSource() == openFile) {
+			if (amff != null) {
 				amff.dispose();
 			}
 			amff = new AddMp3FileFrame();
@@ -318,11 +340,12 @@ public class MediaPlayer extends JFrame implements ActionListener,
 			amff.setVisible(true);
 			amff.addMediaPlayer(this);
 			amff.addCurrentVideo(videoTitle);
-		} else if (e.getSource()==addCommentary){
-			if(bf2!=null){
+		} else if (e.getSource() == addCommentary) {
+			if (bf2 != null) {
 				bf2.dispose();
 			}
-			bf2=new BrowseFileFrame("Add Text to Video","Fill in blank fields");
+			bf2 = new BrowseFileFrame("Add Text to Video",
+					"Fill in blank fields");
 			bf2.addMediaPlayer(this);
 			bf2.addCurrentVideo(videoTitle);
 			bf2.setVisible(true);
@@ -333,25 +356,38 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	public void stateChanged(ChangeEvent arg0) {
 		video.setVolume(slider.getValue());
 	}
-	
-	public void setVideoTitle(String title){
-		this.videoTitle=title;
+
+	public void setVideoTitle(String title) {
+		this.videoTitle = title;
 	}
-	
-	public String getVideoTitle(){
+
+	public String getVideoTitle() {
 		return this.videoTitle;
 	}
-	public String getTextMessage(){
+
+	public String getTextMessage() {
 		return text.getText();
 	}
-	public EmbeddedMediaPlayer getVideo(){
+
+	public EmbeddedMediaPlayer getVideo() {
 		return this.video;
 	}
-	public JLabel getStatuslbl(){
+
+	public JLabel getStatuslbl() {
 		return this.statuslbl;
 	}
-	public void playVideo(){
+
+	public void playVideo() {
 		video.playMedia(videoTitle);
 		video.start();
 	}
+
+	// counts number of words in the text field
+	public int wordCount() {
+		String speechText = text.getText().trim();
+		if (speechText.isEmpty())
+			return 0;
+		return speechText.split("\\s+").length; // separate string around spaces
+	}
+
 }

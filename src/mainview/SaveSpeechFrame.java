@@ -25,7 +25,7 @@ public class SaveSpeechFrame extends JFrame {
 	
 	private JFrame thisFrame = this;
 	private JTextField textField;
-	
+	private MessageFrame mf = null;
 	JFileChooser chooser = null;
 	/**
 	 * Launch the application.
@@ -75,11 +75,17 @@ public class SaveSpeechFrame extends JFrame {
 				
 				//checks if file name is valid
 				if (!fileName.matches(pattern)){
-					MessageFrame mf = new MessageFrame("Error", "Error:", "Invalid Name!");
+					if (mf != null){
+						mf.dispose();
+					}
+					mf = new MessageFrame("Error", "Error:", "Invalid Name!");
 					mf.setVisible(true);
 					return;
 				}else if (fileName.equals("")){
-					MessageFrame mf = new MessageFrame("Error", "Error:", "No Name!");
+					if (mf != null){
+						mf.dispose();
+					}
+					mf = new MessageFrame("Error", "Error:", "No Name!");
 					mf.setVisible(true);
 					return;
 				}
@@ -96,10 +102,16 @@ public class SaveSpeechFrame extends JFrame {
 				
 				// checks if file already exists
 				if (tmpFile.exists() && !tmpFile.isDirectory()){
+					if(mf != null){
+						mf.dispose();
+					}
 					MessageFrame mf = new MessageFrame("Error", "Error:", "File Already Exists!");
 					mf.setVisible(true);
 					return;
 				}else if (!tmpDir.exists()){
+					if(mf != null){
+						mf.dispose();
+					}
 					MessageFrame mf = new MessageFrame("Error", "Error:", "Folder does not Exists!");
 					mf.setVisible(true);
 					return;
