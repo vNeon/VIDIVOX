@@ -64,6 +64,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	private final JPanel controls = new JPanel();
 	private final JPanel speech = new JPanel();
 
+	private final JButton pickVideoFile= new JButton("");
 	private final JButton play = new JButton("");
 	private final JButton forward = new JButton("");
 	private final JButton backward = new JButton("");
@@ -82,9 +83,14 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	private BackgroundVoice bg = null;
 	private SkipBackground sg = null;
 	private AddMp3FileFrame amff = null;
-
+	private BrowseFileFrame bf1=null;
+	private BrowseFileFrame bf2=null;
+	private MessageFrame mf=null;
+	
 	private final EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 	private final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
+	
+	private String videoTitle=null;
 
 	/**
 	 * Launch the application.
@@ -130,7 +136,12 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		controls.setBounds(0, 481, 800, 70);
 		contentPane.add(controls);
 		controls.setLayout(null);
-
+		
+		//pick a video file to play
+		pickVideoFile.setBounds(50, 5, 100,55);
+		pickVideoFile.setText("OPENFILE");
+		pickVideoFile.addActionListener(this);
+		controls.add(pickVideoFile);
 		// Play button
 		play.setBounds(320, 5, 100, 55);
 		play.setIcon(playIcon);
@@ -219,29 +230,41 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		statuslbl.setVisible(true);
 		speech.add(statuslbl);
 		
-		// set Frame/ TODO Auto-generated method stub
+		// set Frame
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MediaPlayer.class.getResource("/javagui/resources/logo.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 700);
 		setContentPane(contentPane);
 		setVisible(true);
-
+		
 		// initiate timer
 		timer.start();
 
-		// set up the video player
-		video.playMedia("big_buck_bunny_1_minute.avi");
-		video.start();
-		video.pause();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(video.getTime());
+		
 		if (video.getTime() == video.getLength()|| !video.isPlaying()) {
 			play.setIcon(playIcon);
+		}else if(video.isPlaying()){
+			play.setIcon(stopIcon);
 		}
-		if (e.getSource() == play) {
+		if ( e.getSource()== pickVideoFile){
+			if(bf1!=null){
+				bf1.dispose();
+			}	
+				bf1= new BrowseFileFrame("Open Video File","Select a video file");
+				bf1.addMediaPlayer(this);
+				bf1.addCurrentVideo(videoTitle);
+				bf1.setVisible(true);
+			
+		}else if (e.getSource() == play) {
+			if(videoTitle==null){
+				mf= null;
+				mf= new MessageFrame("Error", "ERROR 4","No file has been selected");
+				mf.setVisible(true);
+			}
 			if (sg != null) {
 				sg.cancel(true);
 				sg = null;
@@ -279,32 +302,56 @@ public class MediaPlayer extends JFrame implements ActionListener,
 				bg.cancel(true);
 			}
 		} else if (e.getSource() == save) {
-			if(ssf ==null){
-				ssf=null;
-				ssf = new SaveSpeechFrame();
-				ssf.setVisible(true);
-				ssf.setSpeech(text.getText());	
-			}else{
-				ssf.setVisible(true);
-				ssf.setSpeech(text.getText());
+			if(ssf !=null){
+				ssf.dispose();
 			}
+			ssf = new SaveSpeechFrame();
+			ssf.setVisible(true);
+			ssf.setSpeech(text.getText());
 		} else if (e.getSource()== openFile){
-			if(amff == null){
-				amff = new AddMp3FileFrame();
-				amff.addVideo(video);
-				amff.addStatuslbl(statuslbl);
-				amff.setVisible(true);
-			}else{
-				amff.setVisible(true);
+			if(amff != null){
+				amff.dispose();
 			}
+			amff = new AddMp3FileFrame();
+			amff.addVideo(video);
+			amff.addStatuslbl(statuslbl);
+			amff.setVisible(true);
+			amff.addMediaPlayer(this);
+			amff.addCurrentVideo(videoTitle);
 		} else if (e.getSource()==addCommentary){
-			AddText at= new AddText(text.getText(), video, statuslbl);
-			at.execute();
+			if(bf2!=null){
+				bf2.dispose();
+			}
+			bf2=new BrowseFileFrame("Add Text to Video","Fill in blank fields");
+			bf2.addMediaPlayer(this);
+			bf2.addCurrentVideo(videoTitle);
+			bf2.setVisible(true);
 		}
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
 		video.setVolume(slider.getValue());
+	}
+	
+	public void setVideoTitle(String title){
+		this.videoTitle=title;
+	}
+	
+	public String getVideoTitle(){
+		return this.videoTitle;
+	}
+	public String getTextMessage(){
+		return text.getText();
+	}
+	public EmbeddedMediaPlayer getVideo(){
+		return this.video;
+	}
+	public JLabel getStatuslbl(){
+		return this.statuslbl;
+	}
+	public void playVideo(){
+		video.playMedia(videoTitle);
+		video.start();
 	}
 }

@@ -12,24 +12,32 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 public class AddText extends SwingWorker<Object,Integer> {
 	private String message;
-	private String outputFile= "out2.mp4";
+	private String outputFile;
 	private EmbeddedMediaPlayer video;
 	private JLabel statuslbl;
+	private String videoFile;
+	private boolean playVideo;
+	private MediaPlayer mediaPlayer=null;
 	
 	/**
 	 * Constructor
 	 * @param message
 	 */
-	public AddText(String message, EmbeddedMediaPlayer video, JLabel statuslbl){
+	public AddText(String message,String videoFile,String outputFile, EmbeddedMediaPlayer video, 
+			JLabel statuslbl, boolean playVideo, MediaPlayer mediaPlayer){
 		this.message=message;
+		this.videoFile=videoFile;
+		this.outputFile=outputFile;
 		this.video=video;
 		this.statuslbl= statuslbl;
+		this.playVideo= playVideo;
+		this.mediaPlayer=mediaPlayer;
 	}
 	
 	
 	@Override
 	protected Object doInBackground() throws Exception {
-		String cmd="ffmpeg -y -i big_buck_bunny_1_minute.avi -vf \"drawtext=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text="+message+":fontsize=15:fontcolor=black:x=10:y=450\" " +outputFile;
+		String cmd="ffmpeg -y -i "+videoFile+ " -vf \"drawtext=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text="+message+":fontsize=15:fontcolor=black:x=10:y=450\" " +outputFile;
 		ProcessBuilder builder= new ProcessBuilder("/bin/bash","-c", cmd);
 		Process process= builder.start();
 		publish();
@@ -44,14 +52,16 @@ public class AddText extends SwingWorker<Object,Integer> {
 	@Override
 	
 	protected void process(List<Integer> chunks){
-		this.statuslbl.setText("Creating Myfile, please wait...");
+		this.statuslbl.setText("Creating "+outputFile+", please wait...");
 	}
 	@Override
 	protected void done(){
-		this.statuslbl.setText("Successfully created Myfile!");
-		video.playMedia(outputFile);
-		video.start();
-		video.pause();
+		this.statuslbl.setText("Successfully created"+ outputFile);
+		if (playVideo){
+			video.playMedia(outputFile);
+			mediaPlayer.setVideoTitle(outputFile);
+			video.start();
+		}	
 	}
 
 }

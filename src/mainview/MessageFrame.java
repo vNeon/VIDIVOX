@@ -16,8 +16,14 @@ public class MessageFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JFrame thisFrame = this;
+	private JLabel errorTitle = new JLabel();
 	/**
-	 * Launch the application.
+	 * ERROR 1 :blank fields
+	 * ERROR 2 :illegal file- file does not exist a) video file b) mp3 file
+	 * ERROR 3 :illegal file- file is a directory a) video file b) mp3 file
+	 * ERROR 4 :no file has been selected.
+	 * ERROR 5 :try to create an exist file
+	 * ERROR 6 :this is not a directory
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -41,6 +47,7 @@ public class MessageFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+	
 		
 		JLabel title = new JLabel("Title");
 		title.setFont(new Font("Dialog", Font.BOLD, 25));
@@ -75,10 +82,10 @@ public class MessageFrame extends JFrame {
 		thisFrame.setTitle(frameTitle);
 		contentPane.setLayout(null);
 		
-		JLabel title = new JLabel(messageTitle);
-		title.setFont(new Font("Dialog", Font.BOLD, 25));
-		title.setBounds(12, 12, 250, 60);
-		contentPane.add(title);
+		errorTitle.setText(messageTitle);
+		errorTitle.setFont(new Font("Dialog", Font.BOLD, 25));
+		errorTitle.setBounds(12, 12, 250, 60);
+		contentPane.add(errorTitle);
 		
 		JLabel message = new JLabel(messageText);
 		message.setBounds(12, 84, 426, 28);
@@ -92,5 +99,9 @@ public class MessageFrame extends JFrame {
 		});
 		btnNewButton.setBounds(166, 124, 117, 25);
 		contentPane.add(btnNewButton);
+	}
+	
+	public String getErrorTile(){
+		return this.errorTitle.getText();
 	}
 }
