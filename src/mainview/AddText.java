@@ -60,6 +60,7 @@ public class AddText extends SwingWorker<Object,Integer> {
 		if (playVideo){
 			video.playMedia(outputFile);
 			mediaPlayer.setVideoTitle(outputFile);
+			mediaPlayer.setTime();
 			video.start();
 		}	
 	}
