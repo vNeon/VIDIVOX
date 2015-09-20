@@ -40,9 +40,6 @@ public class BrowseFileFrame extends JFrame{
 	private JTextField directory= new JTextField();
 	private JLabel fileType = new JLabel(".avi");
 	private MediaPlayer mediaPlayer= null;
-	private JLabel statuslbl;
-	private EmbeddedMediaPlayer video;
-	private String videoFileText;
 	/**
 	 * Launch the application.
 	 */
