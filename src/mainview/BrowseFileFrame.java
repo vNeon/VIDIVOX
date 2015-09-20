@@ -270,14 +270,7 @@ public class BrowseFileFrame extends JFrame{
 		cancel.setBounds(250, 230, 117, 25);
 		contentPane.add(cancel);
 	}
-	public void addVideo(EmbeddedMediaPlayer video) {
-		this.video = video;
-	}
 
-	public void addStatuslbl(JLabel statuslbl) {
-		this.statuslbl = statuslbl;
-	}
-	
 	public void addCurrentVideo(String videoFile){
 		videoField.setText(videoFile);
 	}
