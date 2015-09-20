@@ -140,7 +140,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 
 		// pick a video file to play
 		pickVideoFile.setBounds(50, 5, 100, 55);
-		pickVideoFile.setText("OPENFILE");
+		pickVideoFile.setText("Select Video");
 		pickVideoFile.addActionListener(this);
 		controls.add(pickVideoFile);
 		// Play button
@@ -212,7 +212,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 
 		// Open file button
 		openFile.setBounds(445, 50, 65, 40);
-		openFile.setToolTipText("Merge an selected audio and a selected video file");
+		openFile.setToolTipText("Select an audio file and a video file and merge them");
 		openFile.setIcon(fileIcon);
 		speech.add(openFile);
 		openFile.addActionListener(this);
@@ -314,6 +314,13 @@ public class MediaPlayer extends JFrame implements ActionListener,
 				}
 				mf = new MessageFrame("Error", "ERROR", "Word count is: "
 						+ wordCount() + ". Must be less than 30 words.");
+				mf.setVisible(true);
+				return;
+			}else if(text.getText().equals("")){
+				if (mf != null) {
+					mf.dispose();
+				}
+				mf = new MessageFrame("Error", "ERROR", "Text field must not be empty!");
 				mf.setVisible(true);
 				return;
 			} else if (ssf != null) {

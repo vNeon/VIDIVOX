@@ -226,9 +226,9 @@ public class BrowseFileFrame extends JFrame {
 							|| !selectedDirectory.isDirectory()
 							|| !checkFileName.getName().matches(pattern)) {
 						if (videoFile.getName().equals("")
-								|| newFile.getName().equals(".avi")
-								|| selectedDirectory.getName().equals("")) {
-							if (mf == null) {
+								|| nameOfFile.getText().equals("")
+								|| directory.getText().equals("")) {
+							if (mf != null) {
 								mf.dispose();
 							}
 							mf = new MessageFrame("Error", "ERROR 1",
