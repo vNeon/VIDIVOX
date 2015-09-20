@@ -18,9 +18,12 @@ public class MessageFrame extends JFrame {
 	private JFrame thisFrame = this;
 	private JLabel errorTitle = new JLabel();
 	/**
-	 * ERROR 1 :illegal file- file is a directory
-	 * ERROR 2 :illegal file- file does not exist
-	 * ERROR 3 :no file has been selected.
+	 * ERROR 1 :blank fields
+	 * ERROR 2 :illegal file- file does not exist a) video file b) mp3 file
+	 * ERROR 3 :illegal file- file is a directory a) video file b) mp3 file
+	 * ERROR 4 :no file has been selected.
+	 * ERROR 5 :try to create an exist file
+	 * ERROR 6 :this is not a directory
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

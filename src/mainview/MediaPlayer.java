@@ -83,6 +83,8 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	private BackgroundVoice bg = null;
 	private SkipBackground sg = null;
 	private AddMp3FileFrame amff = null;
+	private BrowseFileFrame bf1=null;
+	private BrowseFileFrame bf2=null;
 	private MessageFrame mf=null;
 	
 	private final EmbeddedMediaPlayerComponent mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
@@ -245,13 +247,22 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		
 		if (video.getTime() == video.getLength()|| !video.isPlaying()) {
 			play.setIcon(playIcon);
+		}else if(video.isPlaying()){
+			play.setIcon(stopIcon);
 		}
 		if ( e.getSource()== pickVideoFile){
-			BrowseFileFrame bf= new BrowseFileFrame("Open Media File","Select a video file",this);
+			if(bf1!=null){
+				bf1.dispose();
+			}	
+				bf1= new BrowseFileFrame("Open Video File","Select a video file");
+				bf1.addMediaPlayer(this);
+				bf1.addCurrentVideo(videoTitle);
+				bf1.setVisible(true);
+			
 		}else if (e.getSource() == play) {
 			if(videoTitle==null){
 				mf= null;
-				mf= new MessageFrame("Error", "ERROR 3","No file has been selected");
+				mf= new MessageFrame("Error", "ERROR 4","No file has been selected");
 				mf.setVisible(true);
 			}
 			if (sg != null) {
@@ -308,8 +319,13 @@ public class MediaPlayer extends JFrame implements ActionListener,
 			amff.addMediaPlayer(this);
 			amff.addCurrentVideo(videoTitle);
 		} else if (e.getSource()==addCommentary){
-			AddText at= new AddText(text.getText(), video, statuslbl);
-			at.execute();
+			if(bf2!=null){
+				bf2.dispose();
+			}
+			bf2=new BrowseFileFrame("Add Text to Video","Fill in blank fields");
+			bf2.addMediaPlayer(this);
+			bf2.addCurrentVideo(videoTitle);
+			bf2.setVisible(true);
 		}
 	}
 
@@ -325,10 +341,17 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	public String getVideoTitle(){
 		return this.videoTitle;
 	}
-	
+	public String getTextMessage(){
+		return text.getText();
+	}
+	public EmbeddedMediaPlayer getVideo(){
+		return this.video;
+	}
+	public JLabel getStatuslbl(){
+		return this.statuslbl;
+	}
 	public void playVideo(){
 		video.playMedia(videoTitle);
 		video.start();
-		video.pause();
 	}
 }

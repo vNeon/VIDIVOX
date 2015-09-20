@@ -40,7 +40,7 @@ public class AddMp3FileFrame extends JFrame {
 	private JCheckBox playVideoCheck;
 	private JTextField videoFileText;
 	private MediaPlayer mediaPlayer = null;
-
+	private MessageFrame mf=null;
 	/**
 	 * Launch the application.
 	 */
@@ -95,27 +95,59 @@ public class AddMp3FileFrame extends JFrame {
 		JButton btnNewButton = new JButton("Confirm");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				File videoFile= new File(videoFileText.getText());
 				File mp3File = new File(mp3FileText.getText());
 				File newFile = new File(saveToText.getText()
 						+ System.getProperty("file.separator")
 						+ newFileName.getText() + ".avi");
 				File directory = new File(saveToText.getText());
 
-				if (!mp3File.exists() || mp3File.isDirectory()
+				if (!videoFile.exists()||videoFile.isDirectory()||!mp3File.exists() || mp3File.isDirectory()
 						|| newFile.exists() || !directory.exists()) {
-					MessageFrame mf;
-					if (mp3File.isDirectory()) {
-						mf = new MessageFrame("Error", "Error:",
-								"File is a directory");
+			
+					if(videoFileText.getText().equals("")||mp3FileText.getText().equals("")||newFileName.getText().equals("")
+							||saveToText.getText().equals("")){
+						if(mf==null|| !mf.getErrorTile().equals("ERROR 1")){
+							mf= null;
+							mf= new MessageFrame("Error", "ERROR 1",
+									"Please fill in blank fields");
+						}	
+					}else if(!videoFile.exists()){
+						if(mf==null|| !mf.getErrorTile().equals("ERROR 2a")){
+							mf= null;
+							mf= new MessageFrame("Error", "ERROR 2a",
+								videoFile.getName() +" does not exist");
+						}	
+					}else if (videoFile.isDirectory()) {
+						if(mf==null|| !mf.getErrorTile().equals("ERROR 3a")){
+							mf= null;
+							mf= new MessageFrame("Error", "ERROR 3a",
+								videoFile.getName()+ " is a directory");	
+						}
+					}else if (mp3File.isDirectory()) {
+						if(mf==null|| !mf.getErrorTile().equals("ERROR 3b")){
+							mf= null;
+							mf= new MessageFrame("Error", "ERROR 3b",
+								 mp3File.getName()+" is a directory");
+						}
 					} else if (!mp3File.exists()) {
-						mf = new MessageFrame("Error", "Error:",
-								"mp3 file does not exist");
+						if(mf==null|| !mf.getErrorTile().equals("ERROR 2b")){
+							mf= null;
+							mf = new MessageFrame("Error", "ERROR 2b",
+								 mp3File.getName()+" does not exist");
+						}	
 					} else if (!directory.exists()) {
-						mf = new MessageFrame("Error", "Error:",
-								"Directory does not exist");
+						if(mf==null|| !mf.getErrorTile().equals("ERROR 6")){
+							mf= null;
+							mf= new MessageFrame("Error", "ERROR 6",
+								 directory.toString()+" does not exist");
+						}
 					} else {
-						mf = new MessageFrame("Error", "Error:", newFile
+						if(mf==null|| !mf.getErrorTile().equals("ERROR 5")){
+							mf= null;
+							mf= new MessageFrame("Error", "ERROR 5", newFile
 								.getName() + " already exists");
+						}
 					}
 					mf.setVisible(true);
 					return;
@@ -221,12 +253,15 @@ public class AddMp3FileFrame extends JFrame {
 	public void fileChooser(String location) {
 		if (chooser == null) {
 			chooser = new JFileChooser();
-			// FileNameExtensionFilter filter = new
-			// FileNameExtensionFilter("MP3 File","mp3");
+			FileNameExtensionFilter filter;
+			if(location.equals("mp3")){
+				filter = new FileNameExtensionFilter("MP3 File", "mp3");
+			}else{
+				filter = new FileNameExtensionFilter("MP3 File", "mp4","avi");
+			}
 			chooser.setCurrentDirectory(new java.io.File("."));
 			chooser.setDialogTitle("choosertitle");
-			// chooser.setFileFilter((javax.swing.filechooser.FileFilter)
-			// filter);
+			chooser.setFileFilter((javax.swing.filechooser.FileFilter) filter);
 			chooser.setAcceptAllFileFilterUsed(false);
 
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {

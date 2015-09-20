@@ -5,8 +5,10 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,18 +17,32 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+
 
 public class BrowseFileFrame extends JFrame{
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField videoField;
 	private JFrame thisFrame = this;
-	private JFileChooser chooser = null; 
+	private JFileChooser fileChooser = null; 
+	private JFileChooser directoryChooser = null; 
 	private JLabel label = new JLabel();
 	private JLabel videoFilelbl = new JLabel("Video file:");
 	private JButton browseVideoFile = new JButton("Browse");
+	private JButton browseDirectory = new JButton("Browse");
 	private JButton confirm = new JButton("Confirm");
 	private MessageFrame mf=null;
 	private JButton cancel = new JButton("Cancel");
+	private JCheckBox playVideoCheck;
+	private JTextField nameOfFile= new JTextField();
+	private JLabel nameOfFilelbl= new JLabel("File Name:");
+	private JLabel directorylbl= new JLabel("Directory:");
+	private JTextField directory= new JTextField();
+	private JLabel fileType = new JLabel(".avi");
+	private MediaPlayer mediaPlayer= null;
+	private JLabel statuslbl;
+	private EmbeddedMediaPlayer video;
+	private String videoFileText;
 	/**
 	 * Launch the application.
 	 */
@@ -34,7 +50,7 @@ public class BrowseFileFrame extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					BrowseFileFrame frame = new BrowseFileFrame("Frame", "Add file", new MediaPlayer());
+					BrowseFileFrame frame = new BrowseFileFrame("Frame", "Add file");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,10 +62,10 @@ public class BrowseFileFrame extends JFrame{
 	/**
 	 * Create the frame.
 	 */
-	public BrowseFileFrame(String title, String label,final MediaPlayer mediaPlayer){
+	public BrowseFileFrame(String title, String label){
 		setTitle(title);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 225);
+		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -61,73 +77,188 @@ public class BrowseFileFrame extends JFrame{
 		this.label.setBounds(12, 12, 328, 33);
 		contentPane.add(this.label);
 		
+		
+		
 		//video file field
-		textField = new JTextField();
-		textField.setBounds(114, 66, 215, 25);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		videoField = new JTextField();
+		videoField.setBounds(114, 66, 215, 25);
+		contentPane.add(videoField);
 		
 		
-		//this field is for selecting video file
+		//field for selecting video file
 		videoFilelbl.setBounds(12, 76, 87, 15);
 		contentPane.add(videoFilelbl);
 		
-		//Browse button let user selecting file
+		//field for user to enter the name of the file
+		nameOfFile.setBounds(114, 106, 215, 25);
+		contentPane.add(nameOfFile);
+		
+		//Name of file label
+		nameOfFilelbl.setBounds(12, 116 ,87,15);
+		contentPane.add(nameOfFilelbl);
+		
+		//avi label
+		fileType.setBounds(340,116,30,15);
+		contentPane.add(fileType);
+		
+		//directory label
+		directorylbl.setBounds(12, 156, 87, 15);
+		contentPane.add(directorylbl);
+		
+		//directory text field
+		directory.setBounds(114, 146, 215, 25);
+		contentPane.add(directory);
+		try {
+			directory.setText(new java.io.File(".").getCanonicalPath());
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		//Check box 
+		playVideoCheck = new JCheckBox("Play video when finished");
+		playVideoCheck.setBounds(114, 190, 215, 23);
+		contentPane.add(playVideoCheck);
+		
+		
+		
+		
+		//Browse button let user select directory
 		browseVideoFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(chooser ==null){
-					chooser = new JFileChooser();
+				if(fileChooser ==null){
+					fileChooser = new JFileChooser();
 					FileNameExtensionFilter filter = new FileNameExtensionFilter("Media File","avi","mp4");
-					chooser.setCurrentDirectory(new java.io.File("."));
-					chooser.setDialogTitle("choothis.mediaPlayer=mediaPlayer;sertitle");
-					chooser.setFileFilter((javax.swing.filechooser.FileFilter) filter);
-					chooser.setAcceptAllFileFilterUsed(false);
+					fileChooser.setCurrentDirectory(new java.io.File("."));
+					fileChooser.setDialogTitle("choothis.mediaPlayer=mediaPlayer;sertitle");
+					fileChooser.setFileFilter((javax.swing.filechooser.FileFilter) filter);
+					fileChooser.setAcceptAllFileFilterUsed(false);
 
-					if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-						textField.setText(chooser.getSelectedFile().toString());
+					if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+						videoField.setText(fileChooser.getSelectedFile().toString());
 					}
-					chooser = null;
+					fileChooser = null;
 				}
 			}
 		});
 		browseVideoFile.setBounds(341, 66, 87, 25);
 		contentPane.add(browseVideoFile);
 		
+		//Browse button let user select directory
+		browseDirectory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (directoryChooser == null) {
+					directoryChooser = new JFileChooser();
+					directoryChooser.setCurrentDirectory(new java.io.File("."));
+					directoryChooser.setDialogTitle("Find Directory");
+					directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					directoryChooser.setAcceptAllFileFilterUsed(false);
+
+					if (directoryChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+						directorylbl.setText(directoryChooser.getSelectedFile().toString());
+					}
+					directoryChooser = null;
+				}
+			}
+			});
+		browseDirectory.setBounds(341, 146, 87, 25);
+		contentPane.add(browseDirectory);
+
+		// if this is add commentary to video then set check box and text fields to visible 
+				if(thisFrame.getTitle().equals("Open Video File")){
+					playVideoCheck.setVisible(false);
+					nameOfFile.setVisible(false);
+					nameOfFilelbl.setVisible(false);
+					directorylbl.setVisible(false);
+					directory.setVisible(false);
+					fileType.setVisible(false);
+					browseDirectory.setVisible(false);
+					
+				}else{
+					playVideoCheck.setVisible(true);
+					nameOfFile.setVisible(true);
+					nameOfFilelbl.setVisible(true);
+					directorylbl.setVisible(true);
+					directory.setVisible(true);
+					fileType.setVisible(true);
+					browseDirectory.setVisible(true);
+				}
 		//Confirm users choice
 		confirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				File mp3File = new File(textField.getText());
-				if(!mp3File.exists() || mp3File.isDirectory()){
-					if(mp3File.isDirectory()){
-						if(mf==null || mf.getErrorTile().equals("ERROR 2")){
-							mf=null;
-							mf= new MessageFrame("Error", "ERROR 1", "File is a directory");
+				File videoFile = new File(videoField.getText());
+				if(thisFrame.getTitle().equals("Open Video File")){
+					if(!videoFile.exists() ||videoFile.isDirectory()){
+						if(videoField.getText().equals("")){
+							if(mf==null || !mf.getErrorTile().equals("ERROR 1")){
+								mf=null;
+								mf= new MessageFrame("Error", "ERROR 1", "Please fill in blank fields");
+							}
+						}else if(videoFile.isDirectory()){
+							if(mf==null || !mf.getErrorTile().equals("ERROR 3a")){
+								mf=null;
+								mf= new MessageFrame("Error", "ERROR 3a", videoFile.getName()+" is a directory");
+							}
+						}else{
+							if(mf==null|| !mf.getErrorTile().equals("ERROR 2a")){
+								mf=null;
+								mf= new MessageFrame("Error", "ERROR 2a", videoFile.getName()+" does not exist");
+							}
 						}
-					}else{
-						if(mf==null|| mf.getErrorTile().equals("ERROR 1")){
-							mf=null;
-							mf= new MessageFrame("Error", "ERROR 2", "File does not exist");
-						}
-					}
 					mf.setVisible(true);
 					return;
-				}else{
-					
-					mediaPlayer.setVideoTitle(textField.getText());
-					try {
-						Thread.sleep(500);
-						mediaPlayer.playVideo();
-					} catch (InterruptedException e1) {
-						
-						e1.printStackTrace();
+					}else{
+							mediaPlayer.setVideoTitle(videoField.getText());
+							try {
+								Thread.sleep(500);
+								mediaPlayer.playVideo();
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
 					}
-					//AddMp3File amf= new AddMp3File(textField.getText(), video, statuslbl);
-					//amf.execute();
+				}else{
+					File newFile = new File(directory.getText()
+							+ System.getProperty("file.separator")
+							+ nameOfFile.getText() + ".avi");
+					File selectedDirectory = new File(directory.getText());
+					if(!videoFile.exists() ||videoFile.isDirectory()||newFile.exists()||!selectedDirectory.isDirectory()){
+						if(videoFile.getName().equals("")||newFile.getName().equals(".avi")||selectedDirectory.getName().equals("")){
+							if(mf==null || !mf.getErrorTile().equals("ERROR 1")){
+								mf= null;
+								mf= new MessageFrame("Error", "ERROR 1", "Please fill in blank fields");
+							}
+						}else if(videoFile.isDirectory()){
+							if(mf==null || !mf.getErrorTile().equals("ERROR 3a")){
+								mf=null;
+								mf= new MessageFrame("Error", "ERROR 3a", videoFile.getName()+" is a directory");
+							}
+						}else if(!videoFile.exists()){
+							if(mf==null|| !mf.getErrorTile().equals("ERROR 2a")){
+								mf=null;
+								mf= new MessageFrame("Error", "ERROR 2a", videoFile.getName()+" does not exist");
+							}
+						}else if(newFile.exists()){
+							if(mf==null|| !mf.getErrorTile().equals("ERROR 5")){
+								mf=null;
+								mf= new MessageFrame("Error", "ERROR 5", newFile.getName()+" already exists");
+							}
+						}else{
+							if(mf==null|| !mf.getErrorTile().equals("ERROR 6")){
+								mf=null;
+								mf= new MessageFrame("Error", "ERROR 6", selectedDirectory.toString()+" is not a directory");
+							}
+						}
+					mf.setVisible(true);
+					return;
+					}else{
+						AddText at= new AddText(mediaPlayer.getTextMessage(),videoFile.getName(),newFile.getName(), 
+								mediaPlayer.getVideo(),mediaPlayer.getStatuslbl(),playVideoCheck.isSelected(),mediaPlayer);
+						at.execute();
+					}
 				}
 				thisFrame.dispose();
 			}
 		});
-		confirm.setBounds(46, 142, 117, 25);
+		confirm.setBounds(80, 230, 117, 25);
 		contentPane.add(confirm);
 		
 		
@@ -136,8 +267,22 @@ public class BrowseFileFrame extends JFrame{
 				thisFrame.dispose();
 			}
 		});
-		cancel.setBounds(274, 142, 117, 25);
+		cancel.setBounds(250, 230, 117, 25);
 		contentPane.add(cancel);
 	}
+	public void addVideo(EmbeddedMediaPlayer video) {
+		this.video = video;
+	}
+
+	public void addStatuslbl(JLabel statuslbl) {
+		this.statuslbl = statuslbl;
+	}
 	
+	public void addCurrentVideo(String videoFile){
+		videoField.setText(videoFile);
+	}
+	
+	public void addMediaPlayer(MediaPlayer mediaPlayer){
+		this.mediaPlayer = mediaPlayer;
+	}
 }
