@@ -40,22 +40,6 @@ public class BrowseFileFrame extends JFrame {
 	private JLabel fileType = new JLabel(".avi");
 	private MediaPlayer mediaPlayer = null;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					BrowseFileFrame frame = new BrowseFileFrame("Frame",
-							"Add file");
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -114,13 +98,13 @@ public class BrowseFileFrame extends JFrame {
 		playVideoCheck.setBounds(114, 190, 215, 23);
 		contentPane.add(playVideoCheck);
 
-		// Browse button let user select directory
+		// Browse button let user select file
 		browseVideoFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (fileChooser == null) {
 					fileChooser = new JFileChooser();
 					FileNameExtensionFilter filter = new FileNameExtensionFilter(
-							"Media File", "avi", "mp4");
+							"Media File", "avi", "mp4", "mkv");
 					fileChooser.setCurrentDirectory(new java.io.File("."));
 					fileChooser
 							.setDialogTitle("choothis.mediaPlayer=mediaPlayer;sertitle");

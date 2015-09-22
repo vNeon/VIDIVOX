@@ -17,7 +17,8 @@ public class MessageFrame extends JFrame {
 	private JPanel contentPane;
 	private JFrame thisFrame = this;
 	private JLabel errorTitle = new JLabel();
-	/**
+	
+	/*
 	 * ERROR 1 :blank fields
 	 * ERROR 2 :illegal file- file does not exist a) video file b) mp3 file
 	 * ERROR 3 :illegal file- file is a directory a) video file b) mp3 file
@@ -25,19 +26,6 @@ public class MessageFrame extends JFrame {
 	 * ERROR 5 :try to create an exist file
 	 * ERROR 6 :this is not a directory
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MessageFrame frame = new MessageFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	/**
 	 * Create the frame.
 	 */

@@ -27,22 +27,6 @@ public class SaveSpeechFrame extends JFrame {
 	private JTextField textField;
 	private MessageFrame mf = null;
 	JFileChooser chooser = null;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SaveSpeechFrame frame = new SaveSpeechFrame();
-					frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -158,7 +142,7 @@ public class SaveSpeechFrame extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+		//Browse button let user browse for a directory to save the file
 		JButton btnNewButton_2 = new JButton("Browse");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -179,6 +163,7 @@ public class SaveSpeechFrame extends JFrame {
 		btnNewButton_2.setBounds(423, 150, 115, 25);
 		contentPane.add(btnNewButton_2);
 	}
+	//set the message
 	public void setSpeech(String message){
 		this.message = message;
 	}

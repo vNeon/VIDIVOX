@@ -18,7 +18,7 @@ public class SkipBackground extends SwingWorker<Object,Integer>{
 	public SkipBackground() {
 	}
 	/**
-	 * default constructor
+	 * custom constructor
 	 */
 	public SkipBackground(boolean b,EmbeddedMediaPlayer video) {
 		this.skipForward=b;
@@ -29,13 +29,18 @@ public class SkipBackground extends SwingWorker<Object,Integer>{
 	protected Object doInBackground() throws Exception {
 		while(!this.isCancelled()){
 			publish(i);
+			try{
 			Thread.sleep(500);
+			}catch(Exception e){
+				e.getStackTrace();
+			}
 		}
 		return null;
 	}
 	
 	@Override
 	protected void process(List<Integer> chunks){
+		//fast forward or backward by 3 seconds
 		if(skipForward){
 			video.skip(3000);
 		}else{
