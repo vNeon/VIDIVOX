@@ -98,7 +98,7 @@ public class BrowseFileFrame extends JFrame {
 		playVideoCheck.setBounds(114, 190, 215, 23);
 		contentPane.add(playVideoCheck);
 
-		// Browse button let user select directory
+		// Browse button let user select file
 		browseVideoFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (fileChooser == null) {
