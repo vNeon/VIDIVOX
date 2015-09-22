@@ -257,7 +257,8 @@ public class MediaPlayer extends JFrame implements ActionListener,
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//System.out.println(video.getTime());
+		
+		//Only show minute and second
 		if(((int)video.getTime()!=-1)){
 			if(second<60){
 				second=(int)video.getTime()/1000-minute*60;
@@ -281,6 +282,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 			time.setText("00:00:00");
 		}
 		
+		//If there is video playing set the play button with the stop icon or otherwise. 
 		if (video.getTime() == video.getLength() || !video.isPlaying()) {
 			play.setIcon(playIcon);
 		} else if (video.isPlaying()) {
@@ -385,35 +387,37 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		}
 	}
 
+	//Volume control
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
 		video.setVolume(slider.getValue());
 	}
-
+	// set the video title
 	public void setVideoTitle(String title) {
 		this.videoTitle = title;
 	}
-
+	//get the video title
 	public String getVideoTitle() {
 		return this.videoTitle;
 	}
-
+	// Get the message from the text field
 	public String getTextMessage() {
 		return text.getText();
 	}
-
+	//Get the video that is currently playing
 	public EmbeddedMediaPlayer getVideo() {
 		return this.video;
 	}
-
+	// Get Jlabel status
 	public JLabel getStatuslbl() {
 		return this.statuslbl;
 	}
-
+	// play the Video
 	public void playVideo() {
 		video.playMedia(videoTitle);
 		video.start();
 	}
+	// set the minut and second label to 0
 	public void setTime(){
 		this.second=0;
 		this.minute=0;

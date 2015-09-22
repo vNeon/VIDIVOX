@@ -37,12 +37,14 @@ public class AddText extends SwingWorker<Object,Integer> {
 	
 	@Override
 	protected Object doInBackground() throws Exception {
+		// bash command add text to the start of the video
 		String cmd="ffmpeg -y -i "+videoFile+ " -vf \"drawtext=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text="+message+":fontsize=15:fontcolor=black:x=10:y=450\" " +outputFile;
 		ProcessBuilder builder= new ProcessBuilder("/bin/bash","-c", cmd);
 		Process process= builder.start();
 		publish();
 		InputStream stdout = process.getInputStream();
 		BufferedReader stdoutBuffered = new BufferedReader( new InputStreamReader(stdout));
+		//Get input from the terminal output of ffmpeg, when no more output is print means the video is complete.
 		while (stdoutBuffered.readLine() != null) {
 		}
 		process.waitFor();
@@ -50,7 +52,6 @@ public class AddText extends SwingWorker<Object,Integer> {
 		return null;
 	}
 	@Override
-	
 	protected void process(List<Integer> chunks){
 		this.statuslbl.setText("Creating "+outputFile+", please wait...");
 	}

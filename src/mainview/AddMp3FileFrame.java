@@ -43,22 +43,6 @@ public class AddMp3FileFrame extends JFrame {
 	private MessageFrame mf = null;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AddMp3FileFrame frame = new AddMp3FileFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
 	public AddMp3FileFrame() {
@@ -280,7 +264,7 @@ public class AddMp3FileFrame extends JFrame {
 	public void addMediaPlayer(MediaPlayer mediaPlayer) {
 		this.mediaPlayer = mediaPlayer;
 	}
-
+	// Creating file chooser, when the browse button is clicked open a browse and let use choose files 
 	public void fileChooser(String location) {
 		if (chooser == null) {
 			chooser = new JFileChooser();
@@ -305,7 +289,7 @@ public class AddMp3FileFrame extends JFrame {
 			chooser = null;
 		}
 	}
-
+	// Create a directory chooser, open a window and let user choose a directory
 	public void directoryChooser() {
 		if (chooser == null) {
 			chooser = new JFileChooser();
