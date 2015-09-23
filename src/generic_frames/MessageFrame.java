@@ -1,4 +1,4 @@
-package mainview;
+package generic_frames;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -70,11 +70,13 @@ public class MessageFrame extends JFrame {
 		thisFrame.setTitle(frameTitle);
 		contentPane.setLayout(null);
 		
+		// title of the message
 		errorTitle.setText(messageTitle);
 		errorTitle.setFont(new Font("Dialog", Font.BOLD, 25));
 		errorTitle.setBounds(12, 12, 250, 60);
 		contentPane.add(errorTitle);
 		
+		//message to give to user
 		JLabel message = new JLabel(messageText);
 		message.setBounds(12, 84, 426, 28);
 		contentPane.add(message);

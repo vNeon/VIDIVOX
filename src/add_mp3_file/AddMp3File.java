@@ -1,4 +1,4 @@
-package mainview;
+package add_mp3_file;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,6 +10,8 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 import javax.swing.JLabel;
 import javax.swing.SwingWorker;
+
+import mainview.MediaPlayer;
 
 public class AddMp3File extends SwingWorker<Object,Integer> {
 	private String fileName;

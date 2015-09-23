@@ -1,4 +1,4 @@
-package mainview;
+package generic_frames;
 
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -17,6 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import mainview.MediaPlayer;
+import add_text.AddText;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 public class BrowseFileFrame extends JFrame {
@@ -61,7 +63,7 @@ public class BrowseFileFrame extends JFrame {
 
 		// video file field
 		videoField = new JTextField();
-		videoField.setBounds(114, 66, 215, 25);
+		videoField.setBounds(114, 66, 215, 33);
 		contentPane.add(videoField);
 
 		// field for selecting video file
@@ -69,7 +71,7 @@ public class BrowseFileFrame extends JFrame {
 		contentPane.add(videoFilelbl);
 
 		// field for user to enter the name of the file
-		nameOfFile.setBounds(114, 106, 215, 25);
+		nameOfFile.setBounds(114, 106, 215, 33);
 		contentPane.add(nameOfFile);
 
 		// Name of file label
@@ -85,7 +87,7 @@ public class BrowseFileFrame extends JFrame {
 		contentPane.add(directorylbl);
 
 		// directory text field
-		directory.setBounds(114, 146, 215, 25);
+		directory.setBounds(114, 146, 215, 33);
 		contentPane.add(directory);
 		try {
 			directory.setText(new java.io.File(".").getCanonicalPath());
