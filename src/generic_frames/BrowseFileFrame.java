@@ -1,4 +1,4 @@
-package mainview;
+package generic_frames;
 
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -17,6 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import mainview.MediaPlayer;
+import add_text.AddText;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 public class BrowseFileFrame extends JFrame {

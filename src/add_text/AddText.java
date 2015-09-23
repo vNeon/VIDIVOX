@@ -1,4 +1,4 @@
-package mainview;
+package add_text;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.SwingWorker;
 
+import mainview.MediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 public class AddText extends SwingWorker<Object,Integer> {

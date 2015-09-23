@@ -1,4 +1,6 @@
-package mainview;
+package add_mp3_file;
+
+import generic_frames.MessageFrame;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -25,6 +27,8 @@ import java.io.FileFilter;
 import java.io.IOException;
 
 import javax.swing.JCheckBox;
+
+import mainview.MediaPlayer;
 
 public class AddMp3FileFrame extends JFrame {
 

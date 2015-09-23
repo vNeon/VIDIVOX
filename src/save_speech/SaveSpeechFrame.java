@@ -1,4 +1,6 @@
-package mainview;
+package save_speech;
+
+import generic_frames.MessageFrame;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;

@@ -1,5 +1,8 @@
 package mainview;
 
+import generic_frames.BrowseFileFrame;
+import generic_frames.MessageFrame;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -12,9 +15,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import add_mp3_file.AddMp3FileFrame;
+import background_tasks.BackgroundVoice;
+import background_tasks.SkipBackground;
+
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 
+import save_speech.SaveSpeechFrame;
 import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
@@ -34,6 +42,7 @@ import javax.swing.Timer;
 
 import java.awt.Font;
 import java.awt.SystemColor;
+
 import javax.swing.SwingConstants;
 
 public class MediaPlayer extends JFrame implements ActionListener,

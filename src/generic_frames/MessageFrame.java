@@ -1,4 +1,4 @@
-package mainview;
+package generic_frames;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
