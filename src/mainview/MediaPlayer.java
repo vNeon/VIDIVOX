@@ -85,11 +85,11 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	private final JButton addCommentary = new JButton("Add");
 	private final JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
 	private JLabel statuslbl = new JLabel();
-	private JLabel time= new JLabel();
+	private JLabel time = new JLabel();
 
 	private Timer timer = new Timer(200, this);
-	private int minute=0;
-	private int second=0;
+	private int minute = 0;
+	private int second = 0;
 
 	private SaveSpeechFrame ssf = null;
 	private BackgroundVoice bg = null;
@@ -149,14 +149,13 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		controls.setBounds(0, 481, 800, 100);
 		contentPane.add(controls);
 		controls.setLayout(null);
-		//timer
+		// timer
 		time.setBounds(350, 5, 80, 20);
-		time.setFont(new Font("Time New Roman", Font.PLAIN,
-				15));
+		time.setFont(new Font("Time New Roman", Font.PLAIN, 15));
 		time.setText("00:00:00");
 		time.setForeground(Color.BLUE);
 		controls.add(time);
-		
+
 		// pick a video file to play
 		pickVideoFile.setBounds(50, 30, 100, 55);
 		pickVideoFile.setText("Select Video");
@@ -258,40 +257,41 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		setBounds(100, 100, 800, 700);
 		setContentPane(contentPane);
 		setVisible(true);
-		
+
 		// initiate timer
 		timer.start();
-		
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		//Only show minute and second
-		if(((int)video.getTime()!=-1)){
-			if(second<60){
-				second=(int)video.getTime()/1000-minute*60;
+
+		// Only show minute and second
+		if (((int) video.getTime() != -1)) {
+			if (second < 60) {
+				second = (int) video.getTime() / 1000 - minute * 60;
 			}
-			if(second>=60){
-				second=0;
-				minute=minute+1;
+			if (second >= 60) {
+				second = 0;
+				minute = minute + 1;
 			}
-			if(second<10||minute<10){
-				if(second<10&&minute<10){
-					time.setText("00:"+"0"+minute+":0"+second);
-				}else if(second<10){
-					time.setText("00:"+minute+":0"+second);
-				}else{
-					time.setText("00:"+"0"+minute+":"+second);
+			if (second < 10 || minute < 10) {
+				if (second < 10 && minute < 10) {
+					time.setText("00:" + "0" + minute + ":0" + second);
+				} else if (second < 10) {
+					time.setText("00:" + minute + ":0" + second);
+				} else {
+					time.setText("00:" + "0" + minute + ":" + second);
 				}
 			}
-		}else{
-			second=0;
-			minute=0;
+		} else {
+			second = 0;
+			minute = 0;
 			time.setText("00:00:00");
 		}
-		
-		//If there is video playing set the play button with the stop icon or otherwise. 
+
+		// If there is video playing set the play button with the stop icon or
+		// otherwise.
 		if (video.getTime() == video.getLength() || !video.isPlaying()) {
 			play.setIcon(playIcon);
 		} else if (video.isPlaying()) {
@@ -360,11 +360,12 @@ public class MediaPlayer extends JFrame implements ActionListener,
 						+ wordCount() + ". Must be less than 30 words.");
 				mf.setVisible(true);
 				return;
-			}else if(text.getText().equals("")){
+			} else if (text.getText().equals("")) {
 				if (mf != null) {
 					mf.dispose();
 				}
-				mf = new MessageFrame("Error", "ERROR", "Text field must not be empty!");
+				mf = new MessageFrame("Error", "ERROR",
+						"Text field must not be empty!");
 				mf.setVisible(true);
 				return;
 			} else if (ssf != null) {
@@ -385,7 +386,15 @@ public class MediaPlayer extends JFrame implements ActionListener,
 			amff.addMediaPlayer(this);
 			amff.addCurrentVideo(videoTitle);
 		} else if (e.getSource() == addCommentary) {
-			if (bf2 != null) {
+			if (text.getText().equals("")) {
+				if (mf != null) {
+					mf.dispose();
+				}
+				mf = new MessageFrame("Error", "ERROR",
+						"Text field must not be empty!");
+				mf.setVisible(true);
+				return;
+			} else if (bf2 != null) {
 				bf2.dispose();
 			}
 			bf2 = new BrowseFileFrame("Add Text to Video",
@@ -396,41 +405,49 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		}
 	}
 
-	//Volume control
+	// Volume control
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
 		video.setVolume(slider.getValue());
 	}
+
 	// set the video title
 	public void setVideoTitle(String title) {
 		this.videoTitle = title;
 	}
-	//get the video title
+
+	// get the video title
 	public String getVideoTitle() {
 		return this.videoTitle;
 	}
+
 	// Get the message from the text field
 	public String getTextMessage() {
 		return text.getText();
 	}
-	//Get the video that is currently playing
+
+	// Get the video that is currently playing
 	public EmbeddedMediaPlayer getVideo() {
 		return this.video;
 	}
+
 	// Get Jlabel status
 	public JLabel getStatuslbl() {
 		return this.statuslbl;
 	}
+
 	// play the Video
 	public void playVideo() {
 		video.playMedia(videoTitle);
 		video.start();
 	}
+
 	// set the minut and second label to 0
-	public void setTime(){
-		this.second=0;
-		this.minute=0;
+	public void setTime() {
+		this.second = 0;
+		this.minute = 0;
 	}
+
 	// counts number of words in the text field
 	public int wordCount() {
 		String speechText = text.getText().trim();
