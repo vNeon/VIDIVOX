@@ -29,7 +29,7 @@ public class BackgroundVoice extends SwingWorker<Object, Integer> {
 	/**
 	 * Contructor
 	 * 
-	 * @param message
+	 * @param message message that the user provides
 	 */
 	public BackgroundVoice(String message) {
 		this.message = message;

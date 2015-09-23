@@ -41,6 +41,7 @@ public class SaveSpeechFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		// text field where user names the new file
 		textField_1 = new JTextField();
 		textField_1.setBounds(118, 74, 296, 33);
 		contentPane.add(textField_1);
@@ -75,7 +76,7 @@ public class SaveSpeechFrame extends JFrame {
 					mf.setVisible(true);
 					return;
 				}
-				
+				// makes sure the file is a .mp3 file
 				fileName = fileName + ".mp3";
 				
 				if(!folderName.equals("")){
@@ -138,10 +139,10 @@ public class SaveSpeechFrame extends JFrame {
 		textField.setBounds(118, 146, 296, 33);
 		contentPane.add(textField);
 		textField.setColumns(10);
+		// defaults the save path to current directory
 		try {
 			textField.setText(new java.io.File(".").getCanonicalPath());
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		//Browse button let user browse for a directory to save the file

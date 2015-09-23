@@ -98,7 +98,8 @@ public class AddMp3FileFrame extends JFrame {
 						+ newFileName.getText());
 				File directory = new File(saveToText.getText());
 				String pattern = "^[a-zA-Z0-9_]*$";
-
+				
+				//checks that all fields are correct
 				if (!videoFile.exists() || videoFile.isDirectory()
 						|| !mp3File.exists() || mp3File.isDirectory()
 						|| newFile.exists() || !directory.exists()
