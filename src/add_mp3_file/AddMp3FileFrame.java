@@ -85,8 +85,8 @@ public class AddMp3FileFrame extends JFrame {
 		browseMp3File.setBounds(341, 103, 87, 25);
 		contentPane.add(browseMp3File);
 
-		JButton btnNewButton = new JButton("Confirm");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton confirm_btn = new JButton("Confirm");
+		confirm_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				File videoFile = new File(videoFileText.getText());
 				File mp3File = new File(mp3FileText.getText());
@@ -170,8 +170,8 @@ public class AddMp3FileFrame extends JFrame {
 				thisFrame.dispose();
 			}
 		});
-		btnNewButton.setBounds(57, 266, 117, 25);
-		contentPane.add(btnNewButton);
+		confirm_btn.setBounds(57, 266, 117, 25);
+		contentPane.add(confirm_btn);
 
 		JButton cancel_btn = new JButton("Cancel");
 		cancel_btn.addActionListener(new ActionListener() {
