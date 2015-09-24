@@ -16,20 +16,7 @@ Example: The application is in my home direcotory /home/bolten/
 This will take you to this directory.
 
 3. Then type : 
-	./MediaPlayer_dpha010.jar
-This will launch the application.
-if there is an error.
-   Please type: 
-	chmod u+x MediaPlayer_dpha010.jar
-The application should be open and ready to be used.
-
-Second method:
-
-Perform the same step 1 and 2 as in the first method
-
-3. Type chmod u+x MediaPlayer_dpha010.jar
-4. Double click of the runnable .jar application
-This will open the application.
+	java -jar VIDIVOX.jar
 
 ##How to use the application
 
