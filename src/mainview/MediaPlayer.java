@@ -192,6 +192,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		slider.addChangeListener(this);
 		controls.add(slider);
 		
+		// video slider
 		JSlider slider_1 = new JSlider();
 		slider_1.setValue(0);
 		slider_1.setBounds(12, 6, 776, 16);
