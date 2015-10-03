@@ -92,7 +92,7 @@ public class AddMp3FileFrame extends JFrame {
 				File mp3File = new File(mp3FileText.getText());
 				File newFile = new File(saveToText.getText()
 						+ System.getProperty("file.separator")
-						+ newFileName.getText() + ".avi");
+						+ newFileName.getText() + ".mp4");
 				File checkFileName = new File(saveToText.getText()
 						+ System.getProperty("file.separator")
 						+ newFileName.getText());
@@ -249,7 +249,7 @@ public class AddMp3FileFrame extends JFrame {
 		contentPane.add(browseVid_btn);
 		
 		// tells user that the file will have a .avi extension by default
-		JLabel lblNewLabel = new JLabel(".avi");
+		JLabel lblNewLabel = new JLabel(".mp4");
 		lblNewLabel.setBounds(351, 149, 70, 15);
 		contentPane.add(lblNewLabel);
 	}
