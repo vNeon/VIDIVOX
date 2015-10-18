@@ -5,7 +5,10 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+
 import javax.swing.SwingWorker;
+
+import mainview.MediaPlayer;
 
 public class SkipBackground extends SwingWorker<Object,Integer>{
 	private EmbeddedMediaPlayer video;
@@ -31,6 +34,7 @@ public class SkipBackground extends SwingWorker<Object,Integer>{
 			publish(i);
 			try{
 			Thread.sleep(500);
+			
 			}catch(Exception e){
 				e.getStackTrace();
 			}
@@ -45,6 +49,9 @@ public class SkipBackground extends SwingWorker<Object,Integer>{
 			video.skip(3000);
 		}else{
 			video.skip(-3000);
+			if ((int)video.getTime() <= 0){
+				this.cancel(true);
+			}
 		}
 	}
 	

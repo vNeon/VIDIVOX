@@ -4,8 +4,11 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -197,6 +200,22 @@ public class BrowseFileFrame extends JFrame {
 					} else {
 						mediaPlayer.setVideoTitle(videoField.getText());
 						mediaPlayer.playVideo();
+						String cmd = "ffmpeg -i \""+videoField.getText()+"\" 2>&1 | grep Duration | sed 's/Duration: \\(.*\\), start/\\1/g'";
+						String EndTime = null;
+						String line;
+						ProcessBuilder builder= new ProcessBuilder("/bin/bash", "-c",cmd);
+						try {
+							Process process=builder.start();
+							InputStream stdout = process.getInputStream();
+							BufferedReader stdoutBuffered = new BufferedReader( new InputStreamReader(stdout));
+							while ((line = stdoutBuffered.readLine()) != null) {
+								EndTime = line;
+								EndTime = EndTime.substring(2,10);
+								mediaPlayer.setEndTime(EndTime);
+							}
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
 					}
 				} else {
 					File newFile = new File(directory.getText()

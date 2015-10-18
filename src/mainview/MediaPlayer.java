@@ -67,7 +67,6 @@ public class MediaPlayer extends JFrame implements ActionListener,
 			MediaPlayer.class.getResource("/javagui/resources/openfile.png"));
 
 	private JTextField text = new JTextField();
-	private final JLabel volumelbl = new JLabel();
 	private final JPanel contentPane = new JPanel();;
 	private final JPanel screen = new JPanel();
 	private final JPanel controls = new JPanel();
@@ -86,8 +85,12 @@ public class MediaPlayer extends JFrame implements ActionListener,
 	private final JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
 	private JLabel statuslbl = new JLabel();
 	private JLabel time = new JLabel();
+	private JLabel EndTime = new JLabel();
+	private JSlider slider_1 = new JSlider();
+	private JButton mute = new JButton("");
 
-	private Timer timer = new Timer(200, this);
+	private Timer timer = new Timer(100, this);
+	private long endTime = 1;
 	private int minute = 0;
 	private int second = 0;
 
@@ -178,25 +181,31 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		backward.setBounds(190, 44, 100, 55);
 		controls.add(backward);
 		backward.addActionListener(this);
-
-		// volume label
-		volumelbl.setBounds(532, 44, 48, 60);
-		volumelbl.setIcon(volumeIcon);
 		controls.add(volume);
-		volumelbl.setVisible(true);
-		controls.add(volumelbl);
 
 		// volume slider
 		slider.setBounds(588, 39, 200, 65);
 		slider.setPaintTicks(true);
 		slider.addChangeListener(this);
 		controls.add(slider);
+		slider_1.setMaximum(1000000);
+		slider_1.setPaintTrack(true);
 		
 		// video slider
-		JSlider slider_1 = new JSlider();
+		
 		slider_1.setValue(0);
 		slider_1.setBounds(12, 6, 776, 16);
 		controls.add(slider_1);
+		
+		EndTime.setText("00:00:00");
+		EndTime.setForeground(Color.BLUE);
+		EndTime.setFont(new Font("Dialog", Font.PLAIN, 15));
+		EndTime.setBounds(423, 27, 70, 15);
+		controls.add(EndTime);
+		
+		mute.setBounds(526, 44, 50, 55);
+		mute.setIcon(volumeIcon);
+		controls.add(mute);
 
 		// Speech panel
 		speech.setBackground(SystemColor.inactiveCaptionBorder);
@@ -266,7 +275,10 @@ public class MediaPlayer extends JFrame implements ActionListener,
 
 		// initiate timer
 		timer.start();
-
+		
+		if (video.isMute()){
+			video.mute(false);
+		}
 	}
 
 	@Override
@@ -290,6 +302,9 @@ public class MediaPlayer extends JFrame implements ActionListener,
 					time.setText("00:" + "0" + minute + ":" + second);
 				}
 			}
+			slider_1.setValue((int)((double)video.getTime()/(double)endTime*1000000));
+			//System.out.println(video.getTime());
+			System.out.println((int)((double)video.getTime()/(double)endTime*1000000));
 		} else {
 			second = 0;
 			minute = 0;
@@ -333,6 +348,10 @@ public class MediaPlayer extends JFrame implements ActionListener,
 				video.pause();
 			}
 		} else if (e.getSource() == forward) {
+			if (video.canPause()){
+				video.pause();
+				play.setIcon(playIcon);
+			}
 			if (sg != null) {
 				sg.cancel(true);
 				sg = null;
@@ -341,6 +360,10 @@ public class MediaPlayer extends JFrame implements ActionListener,
 			sg.execute();
 
 		} else if (e.getSource() == backward) {
+			if (video.canPause()){
+				video.pause();
+				play.setIcon(playIcon);
+			}
 			if (sg != null) {
 				sg.cancel(true);
 				sg = null;
@@ -391,7 +414,13 @@ public class MediaPlayer extends JFrame implements ActionListener,
 			amff.setVisible(true);
 			amff.addMediaPlayer(this);
 			amff.addCurrentVideo(videoTitle);
-	} 
+	} else if (e.getSource() == mute){
+		if (video.isMute()){
+			video.mute(true);
+		}else{
+			video.mute(false);
+		}
+	}
 //			else if (e.getSource() == addCommentary) {
 //			if (text.getText().equals("")) {
 //				if (mf != null) {
@@ -423,6 +452,18 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		this.videoTitle = title;
 	}
 
+	// set the video title
+		public void setEndTime(String time) {
+			EndTime.setText(time);
+			String hourStr = time.substring(0, 2);
+			long hour = Integer.parseInt(hourStr) * 3600 * 1000;
+			String minuteStr = time.substring(3, 5) ;
+			long minute = Integer.parseInt(minuteStr) * 60 * 1000;
+			String secondStr = time.substring(6, 8);
+			long second = Integer.parseInt(secondStr) * 1000;
+			this.endTime = hour + minute + second;
+		}
+	
 	// get the video title
 	public String getVideoTitle() {
 		return this.videoTitle;
