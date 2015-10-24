@@ -29,11 +29,16 @@ import java.io.IOException;
 import javax.swing.JCheckBox;
 
 import mainview.MediaPlayer;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class AddMp3FileFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField mp3FileText;
+	JComboBox hourBox = new JComboBox();
+	JComboBox minuteBox = new JComboBox();
+	JComboBox secondBox = new JComboBox();
 
 	private JFrame thisFrame = this;
 	private JFileChooser chooser = null;
@@ -45,6 +50,7 @@ public class AddMp3FileFrame extends JFrame {
 	private JTextField videoFileText;
 	private MediaPlayer mediaPlayer = null;
 	private MessageFrame mf = null;
+	private String currentTime = null;
 
 	/**
 	 * Create the frame.
@@ -52,7 +58,7 @@ public class AddMp3FileFrame extends JFrame {
 	public AddMp3FileFrame() {
 		setTitle("Add an mp3 file");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 350);
+		setBounds(100, 100, 450, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -60,7 +66,7 @@ public class AddMp3FileFrame extends JFrame {
 
 		// text field where user enters mp3 file
 		mp3FileText = new JTextField();
-		mp3FileText.setBounds(114, 99, 215, 33);
+		mp3FileText.setBounds(114, 134, 215, 33);
 		contentPane.add(mp3FileText);
 		mp3FileText.setColumns(10);
 
@@ -72,7 +78,7 @@ public class AddMp3FileFrame extends JFrame {
 
 		// label to tell user where to enter the name of the mp3 file
 		JLabel mp3FileLabel = new JLabel("mp3 file:");
-		mp3FileLabel.setBounds(12, 103, 111, 25);
+		mp3FileLabel.setBounds(12, 138, 111, 25);
 		contentPane.add(mp3FileLabel);
 
 		// opens JFileChooser to allow user to search for mp3 file
@@ -82,7 +88,7 @@ public class AddMp3FileFrame extends JFrame {
 				fileChooser("mp3");
 			}
 		});
-		browseMp3File.setBounds(341, 103, 87, 25);
+		browseMp3File.setBounds(341, 138, 87, 25);
 		contentPane.add(browseMp3File);
 
 		JButton confirm_btn = new JButton("Confirm");
@@ -160,8 +166,9 @@ public class AddMp3FileFrame extends JFrame {
 					mf.setVisible(true);
 					return;
 				} else {
+					String offsetTime = (String) hourBox.getSelectedItem() + ":" + (String) minuteBox.getSelectedItem() + ":" + (String) secondBox.getSelectedItem();
 					AddMp3File amf = new AddMp3File(mp3FileText.getText(),
-							videoFileText.getText(), newFile.getAbsolutePath(),
+							videoFileText.getText(), offsetTime,newFile.getAbsolutePath(),
 							video, statuslbl, playVideoCheck.isSelected(),
 							mediaPlayer);
 					amf.execute();
@@ -170,7 +177,7 @@ public class AddMp3FileFrame extends JFrame {
 				thisFrame.dispose();
 			}
 		});
-		confirm_btn.setBounds(57, 266, 117, 25);
+		confirm_btn.setBounds(62, 420, 117, 25);
 		contentPane.add(confirm_btn);
 
 		JButton cancel_btn = new JButton("Cancel");
@@ -181,23 +188,23 @@ public class AddMp3FileFrame extends JFrame {
 				;
 			}
 		});
-		cancel_btn.setBounds(281, 266, 117, 25);
+		cancel_btn.setBounds(280, 420, 117, 25);
 		contentPane.add(cancel_btn);
 
 		// textField where user enters name of file to be created
 		newFileName = new JTextField();
-		newFileName.setBounds(114, 140, 215, 33);
+		newFileName.setBounds(114, 267, 215, 33);
 		contentPane.add(newFileName);
 		newFileName.setColumns(10);
 
 		// label to tell user where to enter the name of new file
 		JLabel newFileLabel = new JLabel("Name of file:");
-		newFileLabel.setBounds(12, 149, 111, 15);
+		newFileLabel.setBounds(12, 276, 111, 15);
 		contentPane.add(newFileLabel);
 
 		// label to tell user where to save the new file
 		saveToText = new JTextField();
-		saveToText.setBounds(114, 181, 215, 33);
+		saveToText.setBounds(114, 312, 215, 33);
 		contentPane.add(saveToText);
 		saveToText.setColumns(10);
 		try {
@@ -209,7 +216,7 @@ public class AddMp3FileFrame extends JFrame {
 
 		// label to tell user where to enter the destination of the new file
 		JLabel saveToLabel = new JLabel("Save to:");
-		saveToLabel.setBounds(12, 190, 70, 15);
+		saveToLabel.setBounds(12, 321, 70, 15);
 		contentPane.add(saveToLabel);
 
 		// opens a JFileChooser to allow the user to find a directory
@@ -219,22 +226,22 @@ public class AddMp3FileFrame extends JFrame {
 				directoryChooser();
 			}
 		});
-		browseDirectory.setBounds(341, 185, 87, 25);
+		browseDirectory.setBounds(341, 316, 87, 25);
 		contentPane.add(browseDirectory);
 
 		// checkbox which allows user to play the video after the processing
 		playVideoCheck = new JCheckBox("Play video when finished");
-		playVideoCheck.setBounds(114, 222, 215, 23);
+		playVideoCheck.setBounds(114, 361, 215, 23);
 		contentPane.add(playVideoCheck);
 
 		// label to tell user where to enter the video file name
 		JLabel videoFileLabel = new JLabel("Video File:");
-		videoFileLabel.setBounds(12, 76, 87, 15);
+		videoFileLabel.setBounds(12, 101, 87, 15);
 		contentPane.add(videoFileLabel);
 
 		// textfield which alllows the user to enter the video file name
 		videoFileText = new JTextField();
-		videoFileText.setBounds(114, 57, 215, 34);
+		videoFileText.setBounds(114, 92, 215, 34);
 		contentPane.add(videoFileText);
 		videoFileText.setColumns(10);
 		
@@ -245,13 +252,49 @@ public class AddMp3FileFrame extends JFrame {
 				fileChooser("video");
 			}
 		});
-		browseVid_btn.setBounds(341, 61, 87, 25);
+		browseVid_btn.setBounds(341, 96, 87, 25);
 		contentPane.add(browseVid_btn);
 		
 		// tells user that the file will have a .avi extension by default
 		JLabel lblNewLabel = new JLabel(".mp4");
-		lblNewLabel.setBounds(351, 149, 70, 15);
+		lblNewLabel.setBounds(347, 276, 70, 15);
 		contentPane.add(lblNewLabel);
+		
+		hourBox.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"}));
+		hourBox.setBounds(114, 179, 50, 24);
+		contentPane.add(hourBox);
+		
+		minuteBox.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"}));
+		minuteBox.setBounds(187, 179, 50, 24);
+		contentPane.add(minuteBox);
+		
+		secondBox.setModel(new DefaultComboBoxModel(new String[] {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"}));
+		secondBox.setBounds(264, 179, 50, 24);
+		contentPane.add(secondBox);
+		
+		JLabel lblTime = new JLabel("Time:");
+		lblTime.setBounds(12, 184, 70, 15);
+		contentPane.add(lblTime);
+		
+		JButton btnNewButton = new JButton("Current");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String[] times = currentTime.split(":");
+				hourBox.setSelectedIndex(Integer.parseInt(times[0]));
+				minuteBox.setSelectedIndex(Integer.parseInt(times[1]));
+				secondBox.setSelectedIndex(Integer.parseInt(times[2]));
+			}
+		});
+		btnNewButton.setBounds(326, 179, 102, 25);
+		contentPane.add(btnNewButton);
+		
+		JLabel label = new JLabel(":");
+		label.setBounds(174, 184, 17, 15);
+		contentPane.add(label);
+		
+		JLabel label_1 = new JLabel(":");
+		label_1.setBounds(249, 184, 17, 15);
+		contentPane.add(label_1);
 	}
 
 	public void addVideo(EmbeddedMediaPlayer video) {
@@ -268,6 +311,10 @@ public class AddMp3FileFrame extends JFrame {
 
 	public void addMediaPlayer(MediaPlayer mediaPlayer) {
 		this.mediaPlayer = mediaPlayer;
+	}
+	
+	public void addCurrentTime(String currentTime) {
+		this.currentTime = currentTime;
 	}
 	// Creating file chooser, when the browse button is clicked open a browse and let use choose files 
 	public void fileChooser(String location) {

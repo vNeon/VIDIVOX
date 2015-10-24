@@ -22,13 +22,14 @@ public class AddMp3File extends SwingWorker<Object,Integer> {
 	private boolean playVideo;
 	private File outputName;
 	private MediaPlayer mediaPlayer;
+	private String offsetTime = "00:00:30";
 	
 	/**
 	 * constructor
 	 * @param fileName
 	 * @param video
 	 */
-	public AddMp3File(String fileName, String vidFile ,String outputFile ,EmbeddedMediaPlayer video, JLabel statuslbl, boolean playVideo, MediaPlayer mediaPlayer){
+	public AddMp3File(String fileName, String vidFile, String offsetTime, String outputFile ,EmbeddedMediaPlayer video, JLabel statuslbl, boolean playVideo, MediaPlayer mediaPlayer){
 		this.fileName = fileName;
 		this.vidFile = vidFile;
 		this.outputFile = outputFile;
@@ -37,11 +38,12 @@ public class AddMp3File extends SwingWorker<Object,Integer> {
 		this.statuslbl= statuslbl;
 		this.playVideo = playVideo;
 		this.mediaPlayer = mediaPlayer;
+		this.offsetTime = offsetTime;
 	}
 	
 	@Override
 	protected Object doInBackground() throws Exception {
-		String cmd="ffmpeg -y -i "+vidFile+" -i "+fileName+" -filter_complex amix=inputs=2 "+outputFile;
+		String cmd="ffmpeg -y -i "+vidFile+" -itsoffset "+offsetTime+" -i "+fileName+" -filter_complex amix=inputs=2 -async 1 "+outputFile;
 		ProcessBuilder builder= new ProcessBuilder("/bin/bash", "-c",cmd);
 		Process process=builder.start();
 		publish();

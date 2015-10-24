@@ -44,6 +44,9 @@ import java.awt.Font;
 import java.awt.SystemColor;
 
 import javax.swing.SwingConstants;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class MediaPlayer extends JFrame implements ActionListener,
 		ChangeListener {
@@ -107,6 +110,8 @@ public class MediaPlayer extends JFrame implements ActionListener,
 			.getMediaPlayer();
 
 	private String videoTitle = null;
+	
+
 
 	/**
 	 * Launch the application.
@@ -153,7 +158,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		contentPane.add(controls);
 		controls.setLayout(null);
 		// timer
-		time.setBounds(317, 24, 80, 20);
+		time.setBounds(12, 24, 80, 20);
 		time.setFont(new Font("Time New Roman", Font.PLAIN, 15));
 		time.setText("00:00:00");
 		time.setForeground(Color.BLUE);
@@ -188,25 +193,33 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		slider.setPaintTicks(true);
 		slider.addChangeListener(this);
 		controls.add(slider);
-		slider_1.setMaximum(1000000);
-		slider_1.setPaintTrack(true);
-		
+		slider_1.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				video.setTime((int)((double)slider_1.getValue()/(double)10000*endTime));
+			}
+		});
+
+			
 		// video slider
 		
 		slider_1.setValue(0);
 		slider_1.setBounds(12, 6, 776, 16);
 		controls.add(slider_1);
+		slider_1.setMaximum(10000);
+		slider_1.setPaintTrack(true);
 		
 		EndTime.setText("00:00:00");
 		EndTime.setForeground(Color.BLUE);
 		EndTime.setFont(new Font("Dialog", Font.PLAIN, 15));
-		EndTime.setBounds(423, 27, 70, 15);
+		EndTime.setBounds(718, 27, 70, 15);
 		controls.add(EndTime);
 		
 		mute.setBounds(526, 44, 50, 55);
 		mute.setIcon(volumeIcon);
 		controls.add(mute);
-
+		mute.addActionListener(this);
+		
 		// Speech panel
 		speech.setBackground(SystemColor.inactiveCaptionBorder);
 		speech.setBounds(0, 609, 800, 142);
@@ -269,7 +282,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
 				MediaPlayer.class.getResource("/javagui/resources/logo.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 750);
+		setBounds(100, 100, 800, 745);
 		setContentPane(contentPane);
 		setVisible(true);
 
@@ -302,9 +315,9 @@ public class MediaPlayer extends JFrame implements ActionListener,
 					time.setText("00:" + "0" + minute + ":" + second);
 				}
 			}
-			slider_1.setValue((int)((double)video.getTime()/(double)endTime*1000000));
+			slider_1.setValue((int)((double)video.getTime()/(double)endTime*10000));
 			//System.out.println(video.getTime());
-			System.out.println((int)((double)video.getTime()/(double)endTime*1000000));
+			//System.out.println((int)((double)video.getTime()/(double)endTime*1000000));
 		} else {
 			second = 0;
 			minute = 0;
@@ -414,11 +427,12 @@ public class MediaPlayer extends JFrame implements ActionListener,
 			amff.setVisible(true);
 			amff.addMediaPlayer(this);
 			amff.addCurrentVideo(videoTitle);
+			amff.addCurrentTime(time.getText());
 	} else if (e.getSource() == mute){
 		if (video.isMute()){
-			video.mute(true);
-		}else{
 			video.mute(false);
+		}else{
+			video.mute(true);
 		}
 	}
 //			else if (e.getSource() == addCommentary) {
