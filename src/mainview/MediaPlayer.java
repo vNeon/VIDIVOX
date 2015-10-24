@@ -222,7 +222,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		
 		// Speech panel
 		speech.setBackground(SystemColor.inactiveCaptionBorder);
-		speech.setBounds(0, 609, 800, 142);
+		speech.setBounds(0, 609, 800, 191);
 		contentPane.add(speech);
 		speech.setLayout(null);
 
@@ -234,7 +234,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		text.setColumns(10);
 
 		// Speak button
-		speak.setBounds(225, 40, 65, 40);
+		speak.setBounds(243, 40, 65, 40);
 		speak.setBackground(new Color(240, 240, 240));
 		speak.setToolTipText("Speak the text in the text box");
 		speak.setIcon(speakIcon);
@@ -271,7 +271,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		//addCommentary.addActionListener(this);
 
 		// status of file being created
-		statuslbl.setBounds(260, 70, 500, 70);
+		statuslbl.setBounds(243, 109, 500, 70);
 		statuslbl.setFont(new Font("Time New Roman", Font.ITALIC + Font.BOLD,
 				15));
 		statuslbl.setForeground(Color.blue);
@@ -282,7 +282,7 @@ public class MediaPlayer extends JFrame implements ActionListener,
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
 				MediaPlayer.class.getResource("/javagui/resources/logo.jpg")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 745);
+		setBounds(100, 100, 800, 790);
 		setContentPane(contentPane);
 		setVisible(true);
 

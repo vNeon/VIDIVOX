@@ -2,6 +2,7 @@ package add_mp3_file;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -69,6 +70,22 @@ public class AddMp3File extends SwingWorker<Object,Integer> {
 			video.playMedia(outputFile);
 			mediaPlayer.setVideoTitle(outputFile);
 			mediaPlayer.setTime();
+			String cmd = "ffmpeg -i \""+outputFile+"\" 2>&1 | grep Duration | sed 's/Duration: \\(.*\\), start/\\1/g'";
+			String EndTime = null;
+			String line;
+			ProcessBuilder builder= new ProcessBuilder("/bin/bash", "-c",cmd);
+			try {
+				Process process=builder.start();
+				InputStream stdout = process.getInputStream();
+				BufferedReader stdoutBuffered = new BufferedReader( new InputStreamReader(stdout));
+				while ((line = stdoutBuffered.readLine()) != null) {
+					EndTime = line;
+					EndTime = EndTime.substring(2,10);
+					mediaPlayer.setEndTime(EndTime);
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			video.start();
 		}
 	}
